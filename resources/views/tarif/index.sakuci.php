@@ -6,7 +6,7 @@
 
     <h1>Daftar Tarif</h1>
 <a href="{{ route('tarif.create') }}" class="btn btn-primary mb-3 btn-sm">Tambah Daftar Tarif</a>
-<table class="table table-striped table-hover">
+<table class="table table-bordered table-striped table-hover">
     <thead>
         <tr>
             <th>No</th>
@@ -22,8 +22,8 @@
             <td> {{ $no++ }} </td>
             <td> {{ $d->jenis_kendaraan }} </td>
             <td> {{ $d->tarif_per_jam }} </td>
-            <td><button class="btn btn-sm btn-success">Edit</button>
-            <form action="{{ route('tarif.destroy', ['id' => $d->id_tarif]) }}" method="POST" style="display:inline;">
+            <td><a href="{{ route('tarif.edit', ['id' => $d->id_tarif]) }}" class="btn btn-sm btn-success">Edit</a>
+            <form action="{{ route('tarif.destroy', ['id' => $d->id_tarif]) }}" method="POST" class="d-inline" onsubmit="return confirm('apakah benar akan dihapus?');">
              @csrf
              @method('DELETE')
     <button type="submit" class="btn btn-sm btn-danger">Hapus</button>

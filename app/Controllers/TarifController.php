@@ -55,4 +55,24 @@ class TarifController extends Controller
         return redirect()->route('tarif.index')
         ->with('success', 'daftar tarif berhasil dihapus');
     }
+
+    public function edit($id_tarif)
+    {
+        $tarif = tarif::findorfail($id_tarif);
+         return view('tarif.edit', compact('tarif'));
+    }
+
+    public function update(Request $request, $id_tarif)
+    {
+        $request->validate([
+            'jenis_kendaraan'=>'required',
+            'tarif_per_jam'=>'required|numeric'
+        ]);
+        $tarif = tarif::findorfail($id_tarif);
+        $tarif->update([
+            'jenis_kendaraan'=> $request->jenis_kendaraan,
+            'tarif_per_jam'=> $request->tarif_per_jam,
+        ]);
+        return redirect()->route('tarif.index')->with('success', 'daftar tarif berhasil diperbarui');
+    }
 }

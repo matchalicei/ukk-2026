@@ -61,6 +61,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     Route::get('/tarif/create', [TarifController::class, 'create'])->name('tarif.create');
     Route::post('/tarif', [TarifController::class, 'store'])->name('tarif.store');
     Route::delete('/tarif/{id}', [TarifController::class, 'destroy'])->name('tarif.destroy');
+    Route::get('/tarif/edit/{id_tarif}', [TarifController::class, 'edit'])->name('tarif.edit');
+    Route::PUT('/tarif/{id_tarif}', [TarifController::class, 'update'])->name('tarif.update');
     });
 
 /*
