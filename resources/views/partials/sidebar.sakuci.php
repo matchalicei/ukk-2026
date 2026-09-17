@@ -60,13 +60,11 @@
             </div>
 
 
-            <div class="sidebar-link disabled">
-
-                <span class="sidebar-icon">●</span>
-                <span>Member</span>
-                <small>soon</small>
-
-            </div>
+            <a href="{{ route('member.index') }}"
+             class="sidebar-link {{ is_route('member.index') ? 'active' : '' }}">
+             <span class="sidebar-icon">●</span>
+             <span>Member</span>
+            </a>
 
 
             <div class="sidebar-link disabled">

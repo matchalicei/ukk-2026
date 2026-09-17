@@ -63,6 +63,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     Route::delete('/tarif/{id}', [TarifController::class, 'destroy'])->name('tarif.destroy');
     Route::get('/tarif/edit/{id_tarif}', [TarifController::class, 'edit'])->name('tarif.edit');
     Route::PUT('/tarif/{id_tarif}', [TarifController::class, 'update'])->name('tarif.update');
+
+    //member routes
+    Route::get('/member', [MemberController::class, 'index'])->name('member.index');
+    Route::get('/member/create', [MemberController::class, 'create'])->name('member.create');
+    Route::post('/member', [MemberController::class, 'store'])->name('member.store');
+    Route::delete('/member/{id}', [MemberController::class, 'destroy'])->name('member.destroy');
+    Route::get('/member/edit/{id_member}', [MemberController::class, 'edit'])->name('member.edit');
+    Route::PUT('/member/{id_member}', [MemberController::class, 'update'])->name('member.update');
     });
 
 /*

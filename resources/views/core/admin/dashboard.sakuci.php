@@ -66,7 +66,8 @@
 
             {{-- MEMBER --}}
             <div class="col-md-6">
-                <div class="card border-0 shadow-sm h-100 dashboard-card disabled">
+            <a href="{{ route('member.index')}}"
+             class="card border-0 shadow-sm text-decoration-none h-100 dashboard-card">
 
                     <div class="card-body p-4">
 
@@ -79,9 +80,6 @@
                                 Member
                             </h3>
 
-                            <span class="badge text-bg-secondary">
-                                Soon
-                            </span>
                         </div>
 
                         <p class="text-secondary small mb-0">
@@ -89,7 +87,7 @@
                         </p>
 
                     </div>
-                </div>
+                </a>
             </div>
 
 

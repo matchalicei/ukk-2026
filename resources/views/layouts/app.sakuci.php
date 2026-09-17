@@ -39,6 +39,9 @@
             is_route('tarif.index') ||
             is_route('tarif.create') ||
             is_route('tarif.edit') ||
+            is_route('member.index') ||
+            is_route('member.create') ||
+            is_route('member.edit') ||
             is_route('admin.users.index') ||
             is_route('admin.roles.index')
         )
