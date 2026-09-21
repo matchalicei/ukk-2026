@@ -4,9 +4,9 @@
 */
 
 :root {
-    --brand: #c2410c;
-    --brand-dark: #9a3412;
-    --brand-subtle: #fff7ed;
+    --brand: #7fafc9;
+    --brand-dark: #4f7185;
+    --brand-subtle: #eaf4f9;
 }
 
 body {
@@ -183,7 +183,7 @@ code.inline {
 .demo-box {
     padding: .6rem .5rem;
     background: var(--brand-subtle);
-    border: 1px solid #fdba8c;
+    border: 1px solid #b9d7e5;
     border-radius: 6px;
     color: var(--brand-dark);
     font-size: .8rem;
@@ -240,14 +240,14 @@ code.inline {
 [data-bs-theme="dark"] .badge-brand,
 [data-bs-theme="dark"] .bg-brand-subtle,
 [data-bs-theme="dark"] .step-number {
-    background-color: rgba(194, 65, 12, .18) !important;
-    color: #fb923c;
+    background-color: rgba(127, 175, 201, .18) !important;
+    color: #9ccbe3;
 }
 
 [data-bs-theme="dark"] .demo-box {
-    background-color: rgba(194, 65, 12, .18);
-    border-color: rgba(194, 65, 12, .4);
-    color: #fb923c;
+    background-color: rgba(127, 175, 201, .18);
+    border-color: rgba(127, 175, 201, .4);
+    color: #9ccbe3;
 }
 
 [data-bs-theme="dark"] .demo-box-alt {
@@ -410,4 +410,39 @@ code.inline {
     font-size: 10px;
     color: var(--bs-secondary-color);
     line-height: 1.5;
+}
+
+/* Header tabel soft blue */
+.table thead.table-header-blue th {
+    --bs-table-bg: #eaf3ff !important;
+    --bs-table-color: #4f7185 !important;
+
+    background-color: #eaf3ff !important;
+    color: #4f7185 !important;
+
+    font-weight: 600 !important;
+}
+
+/* =========================
+   WELCOME PAGE
+   ========================= */
+
+.welcome-page {
+    min-height: calc(100vh - 57px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: linear-gradient(
+        135deg,
+        #9ccbe3 50%,
+        #a5b4fc 100%
+    );
+
+    padding: 40px;
+}
+
+.welcome-content {
+    text-align: center;
 }

@@ -7,7 +7,7 @@
     <h1>Daftar Member</h1>
 <a href="{{ route('member.create') }}" class="btn btn-primary mb-3 btn-sm">Tambah Daftar Member</a>
 <table class="table table-bordered table-striped table-hover">
-    <thead>
+    <thead class="table-header-blue">
         <tr>
             <th>No</th>
             <th>nama_member</th>

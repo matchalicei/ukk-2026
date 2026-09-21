@@ -4,6 +4,8 @@
 
 @section('content')
 
+<div class="welcome-page">
+
 <section class="text-center py-5">
 
     <div class="container py-lg-5">
@@ -106,7 +108,7 @@
         </div>
 
     </div>
-
+</div>
 </section>
 
 @endsection

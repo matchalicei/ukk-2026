@@ -22,7 +22,7 @@
     </script>
 
     <link rel="stylesheet" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}?v=2">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}?v=3">
 </head>
 
 <body class="d-flex flex-column min-vh-100 bg-body-tertiary">
