@@ -5,16 +5,16 @@
 @section ('content')
 
     <h1>Daftar Member</h1>
-<a href="{{ route('member.create') }}" class="btn btn-primary mb-3 btn-sm">Tambah Daftar Member</a>
+<a href="{{ route('member.create') }}" class="btn btn-primary mb-3 btn-sm"  style="background-color: #425B9A; color: white; border: none;">Tambah Daftar Member</a>
 <table class="table table-bordered table-striped table-hover">
-    <thead class="table-header-blue">
+    <thead>
         <tr>
-            <th>No</th>
-            <th>nama_member</th>
-            <th>plat_nomor</th>
-            <th>jenis_kendaraan</th>
-            <th>warna</th>
-            <th>aksi</th>
+            <th style="background-color: #76C0EC !important; color: white !important;">No</th>
+            <th style="background-color: #76C0EC !important; color: white !important;">nama_member</th>
+            <th style="background-color: #76C0EC !important; color: white !important;">plat_nomor</th>
+            <th style="background-color: #76C0EC !important; color: white !important;">jenis_kendaraan</th>
+            <th style="background-color: #76C0EC !important; color: white !important;">warna</th>
+            <th style="background-color: #76C0EC !important; color: white !important;">aksi</th>
         </tr>
     </thead>
     <tbody>

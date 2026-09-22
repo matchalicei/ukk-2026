@@ -5,14 +5,14 @@
 @section ('content')
 
     <h1>Daftar Tarif</h1>
-<a href="{{ route('tarif.create') }}" class="btn btn-primary mb-3 btn-sm">Tambah Daftar Tarif</a>
+<a href="{{ route('tarif.create') }}" class="btn btn-primary mb-3 btn-sm"  style="background-color: #425B9A; color: white; border: none;">Tambah Daftar Tarif</a>
 <table class="table table-bordered table-striped table-hover">
     <thead>
         <tr>
-            <th>No</th>
-            <th>jenis_kendaraan</th>
-            <th>tarif_per_jam</th>
-            <th>aksi</th>
+            <th style="background-color: #76C0EC !important; color: white !important;">No</th>
+            <th style="background-color: #76C0EC !important; color: white !important;">jenis_kendaraan</th>
+            <th style="background-color: #76C0EC !important; color: white !important;">tarif_per_jam</th>
+            <th style="background-color: #76C0EC !important; color: white !important;">aksi</th>
         </tr>
     </thead>
     <tbody>

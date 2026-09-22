@@ -194,7 +194,7 @@ code.inline {
 .demo-box-alt {
     background: #eef2ff;
     border-color: #c7d2fe;
-    color: #3730a3;
+    color: #00273f;
 }
 
 /* Halaman error */
@@ -410,39 +410,4 @@ code.inline {
     font-size: 10px;
     color: var(--bs-secondary-color);
     line-height: 1.5;
-}
-
-/* Header tabel soft blue */
-.table thead.table-header-blue th {
-    --bs-table-bg: #eaf3ff !important;
-    --bs-table-color: #4f7185 !important;
-
-    background-color: #eaf3ff !important;
-    color: #4f7185 !important;
-
-    font-weight: 600 !important;
-}
-
-/* =========================
-   WELCOME PAGE
-   ========================= */
-
-.welcome-page {
-    min-height: calc(100vh - 57px);
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: linear-gradient(
-        135deg,
-        #9ccbe3 50%,
-        #a5b4fc 100%
-    );
-
-    padding: 40px;
-}
-
-.welcome-content {
-    text-align: center;
 }
