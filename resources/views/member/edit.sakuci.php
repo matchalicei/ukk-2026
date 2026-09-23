@@ -9,16 +9,19 @@
         @csrf
         @method('PUT')
 
-         <div class="form-group mb-3">
-            <label for="nama_member">nama member</label>
-            <input
-                type="text"
-                name="nama_member"
-                id="nama_member"
-                class="form-control"
-                value="{{ $member->nama_member}}"
-                required>
-        </div>
+         <div class="mb-3"><label for="id_user" class="form-label text-secondary fs-7">Pilih User / Pemilik</label>
+                            <select name="id_user" id="id_user" class="form-select" required>
+                                <option value="">-- Pilih User --</option>
+                                @foreach($users as $user)
+                                    @php 
+                                        $userId = $user->id ?? $user->id_user; 
+                                    @endphp
+                                    <option value="{{ $userId }}" {{ $member->id_user == $userId ? 'selected' : '' }}>
+                                        {{ $user->nama ?? $user->name ?? $user->username }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
 
         <div class="form-group mb-3">
             <label for="plat_nomor">plat nomor</label>

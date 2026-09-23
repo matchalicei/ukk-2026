@@ -6,16 +6,21 @@
     <h1>Tambah Daftar Member</h1>
     <form action="{{ route('member.store') }}" method="POST">
         @csrf
-        <div class="form-group mb-3">
-        <label for="nama_member">nama member</label>
-          <input
-            type="text"
-            name="nama_member"
-            id="nama_member"
-            class="form-control"
-            placeholder="Masukkan Nama"
-            required>
-        </div>
+      <div class="mb-3">
+    <label for="id_user" class="form-label text-secondary fs-7">
+        Pilih User / Pemilik
+    </label>
+
+    <select name="id_user" id="id_user" class="form-select" required>
+        <option value="">-- Pilih User --</option>
+
+        <?php foreach($users as $user): ?>
+            <option value="<?= e($user->id) ?>">
+                <?= e($user->username) ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+</div>
     
         <div class="form-group mb-3">
             <label for="plat_nomor">Plat Nomor</label>

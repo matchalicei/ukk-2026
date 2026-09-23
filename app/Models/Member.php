@@ -9,5 +9,10 @@ class Member extends Model
     protected static ?string $table = 'member';
     protected string $primaryKey = 'id_member';
 
-    protected array $fillable = ['nama_member', 'plat_nomor', 'jenis_kendaraan', 'warna'];
+    protected array $fillable = ['id_user', 'plat_nomor', 'jenis_kendaraan', 'warna'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_user', 'id');
+    }
 }

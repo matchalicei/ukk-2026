@@ -71,6 +71,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     Route::delete('/member/{id}', [MemberController::class, 'destroy'])->name('member.destroy');
     Route::get('/member/edit/{id_member}', [MemberController::class, 'edit'])->name('member.edit');
     Route::PUT('/member/{id_member}', [MemberController::class, 'update'])->name('member.update');
+
+    //area parkir routes
+    Route::get('/area-parkir', [AreaParkirController::class, 'index'])->name('area-parkir.index');
+    Route::get('/area-parkir/create', [AreaParkirController::class, 'create'])->name('area-parkir.create');
+    Route::post('/area-parkir', [AreaParkirController::class, 'store'])->name('area-parkir.store');
+    Route::delete('/area-parkir/{id}', [AreaParkirController::class, 'destroy'])->name('area-parkir.destroy');
+    Route::get('/area-parkir/{id_area}/edit', [AreaParkirController::class, 'edit'])->name('area-parkir.edit');
+    Route::put('/area-parkir/{id_area}', [AreaParkirController::class, 'update'])->name('area-parkir.update');
     });
 
 /*
@@ -88,6 +96,21 @@ Route::group(['prefix' => 'siswa', 'middleware' => 'siswa'], function () {
     Route::get('/', [DashboardController::class, 'index'])->name('siswa.dashboard');
 });
 // @role:siswa:end
+// @role:owner:start
+Route::group(['prefix' => 'owner', 'middleware' => 'owner'], function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('owner.dashboard');
+});
+// @role:owner:end
+// @role:petugas:start
+Route::group(['prefix' => 'petugas', 'middleware' => 'petugas'], function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('petugas.dashboard');
+});
+// @role:petugas:end
+// @role:user:start
+Route::group(['prefix' => 'user', 'middleware' => 'user'], function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('user.dashboard');
+});
+// @role:user:end
 // @generated-roles:end
 
 /*

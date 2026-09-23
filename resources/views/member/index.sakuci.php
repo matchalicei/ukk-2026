@@ -22,7 +22,7 @@
         @foreach($data as $m)
         <tr>
             <td> {{ $no++ }} </td>
-            <td> {{ $m->nama_member }} </td>
+            <td>{{ $m->user->nama ?? $m->user->username ?? 'User #' . $m->id_user }} </td>
             <td> {{ $m->plat_nomor }} </td>
             <td> {{ $m->jenis_kendaraan }} </td>
             <td> {{ $m->warna }} </td>

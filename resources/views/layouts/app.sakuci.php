@@ -42,6 +42,9 @@
             is_route('member.index') ||
             is_route('member.create') ||
             is_route('member.edit') ||
+             is_route('area-parkir.index') ||
+            is_route('area-parkir.create') ||
+            is_route('area-parkir.edit') ||
             is_route('admin.users.index') ||
             is_route('admin.roles.index')
         )

@@ -31,6 +31,9 @@ return [
     ],
 
     'middleware' => [
+        'user' => App\Middleware\UserOnly::class,
+        'petugas' => App\Middleware\PetugasOnly::class,
+        'owner' => App\Middleware\OwnerOnly::class,
         'siswa' => App\Middleware\SiswaOnly::class,
         'auth'  => App\Middleware\Authenticate::class,
         'guest' => App\Middleware\RedirectIfAuthenticated::class,

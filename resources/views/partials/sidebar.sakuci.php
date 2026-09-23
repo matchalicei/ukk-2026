@@ -67,13 +67,13 @@
             </a>
 
 
-            <div class="sidebar-link disabled">
+           <a href="{{ route('area-parkir.index') }}"
+             class="sidebar-link {{ is_route('area-parkir.index') ? 'active' : '' }}">
 
                 <span class="sidebar-icon">□</span>
                 <span>Area Parkir</span>
-                <small>soon</small>
 
-            </div>
+            </a>
 
 
             <div class="sidebar-link disabled">
