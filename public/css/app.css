@@ -4,9 +4,9 @@
 */
 
 :root {
-    --brand: #7fafc9;
-    --brand-dark: #4f7185;
-    --brand-subtle: #eaf4f9;
+    --brand: #D62828;
+    --brand-dark: #a51f1f;
+    --brand-subtle: #fff0f0;
 }
 
 body {
@@ -112,8 +112,13 @@ body {
     color: #fff;
 }
 
-.text-brand   { color: var(--brand) !important; }
-.bg-brand-subtle { background-color: var(--brand-subtle) !important; }
+.text-brand {
+    color: var(--brand) !important;
+}
+
+.bg-brand-subtle {
+    background-color: var(--brand-subtle) !important;
+}
 
 .badge-brand {
     background-color: var(--brand-subtle);
@@ -132,7 +137,9 @@ pre.code {
     overflow-x: auto;
 }
 
-pre.code .cmt { color: #64748b; }
+pre.code .cmt {
+    color: #64748b;
+}
 
 code.inline {
     padding: 2px 6px;
@@ -183,7 +190,7 @@ code.inline {
 .demo-box {
     padding: .6rem .5rem;
     background: var(--brand-subtle);
-    border: 1px solid #b9d7e5;
+    border: 1px solid #e8b6b6;
     border-radius: 6px;
     color: var(--brand-dark);
     font-size: .8rem;
@@ -192,9 +199,9 @@ code.inline {
 }
 
 .demo-box-alt {
-    background: #eef2ff;
-    border-color: #c7d2fe;
-    color: #00273f;
+    background: #fff4d6;
+    border-color: #f2d27a;
+    color: #6b4f00;
 }
 
 /* Halaman error */
@@ -240,20 +247,20 @@ code.inline {
 [data-bs-theme="dark"] .badge-brand,
 [data-bs-theme="dark"] .bg-brand-subtle,
 [data-bs-theme="dark"] .step-number {
-    background-color: rgba(127, 175, 201, .18) !important;
-    color: #9ccbe3;
+    background-color: rgba(214, 40, 40, .18) !important;
+    color: #ff6b6b;
 }
 
 [data-bs-theme="dark"] .demo-box {
-    background-color: rgba(127, 175, 201, .18);
-    border-color: rgba(127, 175, 201, .4);
-    color: #9ccbe3;
+    background-color: rgba(214, 40, 40, .18);
+    border-color: rgba(214, 40, 40, .4);
+    color: #ff6b6b;
 }
 
 [data-bs-theme="dark"] .demo-box-alt {
-    background-color: rgba(99, 102, 241, .18);
-    border-color: rgba(99, 102, 241, .4);
-    color: #a5b4fc;
+    background-color: rgba(255, 196, 0, .18);
+    border-color: rgba(255, 196, 0, .4);
+    color: #ffd84d;
 }
 
 .sidebar {

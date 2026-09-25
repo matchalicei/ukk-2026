@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-body border-bottom sticky-top">
+<nav class="navbar navbar-expand-lg bg-body sticky-top racing-navbar">
 
     <div class="container-fluid px-3">
 
@@ -44,7 +44,7 @@
             </button>
 
             {{-- Nama aplikasi --}}
-            <a class="navbar-brand fw-semibold m-0"
+            <a class="navbar-brand fw-bold m-0 racing-brand"
                href="{{ route('home') }}">
                 Sistem Parkir
             </a>
@@ -110,14 +110,14 @@
 
                 @if ($canRegister)
 
-                    <a class="nav-link"
+                    <a class="nav-link racing-register"
                        href="{{ route('register') }}">
                         Daftar
                     </a>
 
                 @endif
 
-                <a class="btn btn-sm btn-brand rounded-pill px-3"
+                <a class="btn btn-sm racing-login rounded-pill px-3"
                    href="{{ route('login') }}">
                     Masuk
                 </a>
@@ -129,3 +129,61 @@
     </div>
 
 </nav>
+
+<style>
+    .racing-navbar {
+        border-bottom: 2px solid #D62828 !important;
+    }
+
+    .racing-brand {
+        color: #252525 !important;
+        transition: .2s ease;
+    }
+
+    .racing-brand:hover {
+        color: #D62828 !important;
+    }
+
+    .racing-register {
+        color: #D62828 !important;
+        font-weight: 700;
+        transition: .2s ease;
+    }
+
+    .racing-register:hover {
+        color: #252525 !important;
+    }
+
+    .racing-login {
+        background: #D62828;
+        color: white;
+        border: 2px solid #D62828;
+        font-weight: 700;
+        box-shadow: 3px 3px 0 #252525;
+        transition: .2s ease;
+    }
+
+    .racing-login:hover {
+        background: #FFC400;
+        color: #252525;
+        border-color: #FFC400;
+        transform: translate(-1px, -1px);
+        box-shadow: 4px 4px 0 #252525;
+    }
+
+    [data-bs-theme="dark"] .racing-brand {
+        color: white !important;
+    }
+
+    [data-bs-theme="dark"] .racing-brand:hover {
+        color: #FFC400 !important;
+    }
+
+    [data-bs-theme="dark"] .racing-register {
+        color: #FFC400 !important;
+    }
+
+    [data-bs-theme="dark"] .racing-register:hover {
+        color: white !important;
+    }
+</style>
