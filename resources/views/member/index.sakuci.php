@@ -710,7 +710,7 @@
                     Daftar <span>Member</span>
 
                     <img
-                        src="{{ asset('assets/images/racing/californiamcqueen.png') }}"
+                        src="{{ asset('assets/images/racing/california.jpeg') }}"
                         class="california-member"
                         alt=""
                     >
