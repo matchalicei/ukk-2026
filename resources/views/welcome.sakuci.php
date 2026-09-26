@@ -100,9 +100,9 @@
     .hero-content {
         position: relative;
         z-index: 10;
-        max-width: 850px;
+        max-width: 950px;
         margin: 0 auto;
-        padding: 130px 24px 0;
+        padding: 130px 40px 0;
         text-align: center;
     }
 

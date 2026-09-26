@@ -23,10 +23,7 @@ use Sakuci\Route;
 
 Route::get('/', function () {
     return view('welcome');
-})->name('home');
-
-Route::get('/docs', [DocsController::class, 'index'])->name('docs');
-
+})->name('welcome');
 /*
 |--------------------------------------------------------------------------
 | Login multi-role

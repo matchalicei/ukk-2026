@@ -10,14 +10,27 @@ use App\Models\User;
 class MemberController extends Controller
 {
     public function index(Request $request)
-    {
-        $data= Member::orderBy('id_member', 'desc')
-            ->paginate(5);
-             $users = User::all(); 
+{
+    $data = Member::query()
+        ->join('users', 'member.id_user', '=', 'users.id')
+        ->select('member.*');
 
-        return view('member.index', compact('data', 'users'));
+    if ($request->search) {
+        $data->where(function ($query) use ($request) {
+            $query->where('users.username', 'like', '%' . $request->search . '%')
+                  ->orWhere('member.plat_nomor', 'like', '%' . $request->search . '%')
+                  ->orWhere('member.jenis_kendaraan', 'like', '%' . $request->search . '%')
+                  ->orWhere('member.warna', 'like', '%' . $request->search . '%');
+        });
     }
 
+    $data = $data->orderBy('member.id_member', 'desc')
+        ->paginate(5);
+
+    $users = User::all();
+
+    return view('member.index', compact('data', 'users'));
+}
     public function create(Request $request)
     {
          $users = User::all();

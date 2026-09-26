@@ -22,13 +22,12 @@
     </script>
 
     <link rel="stylesheet" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}?v=3">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}?v=4">
 </head>
 
 <body class="d-flex flex-column min-vh-100 bg-body-tertiary">
 
-    {{-- Navbar --}}
-    @include('partials.navbar')
+    {{-- Navbar dihilangkan agar tampilan tidak terlihat seperti template Sakuci --}}
 
     {{-- Isi halaman --}}
     <div class="d-flex flex-grow-1">
@@ -42,7 +41,7 @@
             is_route('member.index') ||
             is_route('member.create') ||
             is_route('member.edit') ||
-             is_route('area-parkir.index') ||
+            is_route('area-parkir.index') ||
             is_route('area-parkir.create') ||
             is_route('area-parkir.edit') ||
             is_route('admin.users.index') ||
@@ -51,7 +50,7 @@
             @include('partials.sidebar')
         @endif
 
-        <main class="flex-grow-1 py-4 py-lg-5 px-3 px-lg-4">
+       <main class="flex-grow-1 px-3 px-lg-4 pt-4">
 
             @include('partials.flash')
 

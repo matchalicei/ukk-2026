@@ -37,7 +37,7 @@
                 rgba(255, 196, 0, .08),
                 transparent 30%
             ),
-            #171717;
+            transparent;
     }
 
     .dashboard-container {

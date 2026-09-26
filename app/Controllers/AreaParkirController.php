@@ -8,12 +8,22 @@ use App\Models\AreaParkir;
 
 class AreaParkirController extends Controller
 {
-   public function index(Request $request)
-    {
-        $data= AreaParkir::orderBy('id_area', 'desc')
-            ->paginate(5);
-        return view('area-parkir.index', compact('data'));
+  public function index(Request $request)
+{
+    $query = AreaParkir::orderBy('id_area', 'desc');
+
+    if ($request->search) {
+        $query->where(
+            'nama_area',
+            'like',
+            '%' . $request->search . '%'
+        );
     }
+
+    $data = $query->paginate(5);
+
+    return view('area-parkir.index', compact('data'));
+}
 
     public function create(Request $request)
     {

@@ -35,15 +35,16 @@
             );
     }
 
-    [data-bs-theme="dark"] .member-page {
+     [data-bs-theme="dark"] .member-page {
         background:
             radial-gradient(
                 circle at 90% 10%,
                 rgba(255, 196, 0, .08),
                 transparent 30%
             ),
-            #171717;
+            transparent;
     }
+
 
     .member-container {
         position: relative;
@@ -347,7 +348,7 @@
     }
 
     [data-bs-theme="dark"] .member-table-wrapper {
-        background: #242424;
+        background: #252525;
 
         border-color: white;
 
@@ -678,6 +679,48 @@
             min-width: 850px;
         }
     }
+
+  .member-search {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    margin: 0 auto 28px;
+}
+
+.member-search input {
+    flex: 1;
+    height: 48px;
+    padding: 0 18px;
+    border: 2px solid #252525;
+    border-radius: 12px;
+    background: #fff;
+    font-size: 15px;
+    outline: none;
+}
+
+.member-search input:focus {
+    border-color: #D62828;
+    box-shadow: 0 0 0 3px rgba(214, 40, 40, 0.12);
+}
+
+.member-search input::placeholder {
+    color: #888;
+}
+
+.member-search .btn-racing {
+    height: 48px;
+    min-width: 90px;
+    border-radius: 12px;
+}
+[data-bs-theme="dark"] .member-search input {
+    background: #252525;
+    color: #fff;
+    border-color: #fff;
+}
+
+[data-bs-theme="dark"] .member-search input::placeholder {
+    color: #aaa;
+}
 </style>
 
 
@@ -702,7 +745,7 @@
             <div class="member-header-content">
 
                 <div class="member-badge">
-                    👀 MEMBER GARAGE
+                    MEMBER GARAGE
                 </div>
 
                 <h1 class="member-title">
@@ -726,6 +769,19 @@
             </div>
 
         </div>
+
+        <form method="GET" action="{{ route('member.index') }}" class="member-search">
+        <input
+            type="text"
+            name="search"
+            value="{{ request('search') }}"
+            placeholder="Cari nama, plat nomor, atau kendaraan..."
+        >
+
+    <button type="submit" class="btn btn-racing">
+        Cari
+    </button>
+</form>
 
 
         {{-- ACTION --}}

@@ -73,10 +73,10 @@ class AuthController extends Controller
     }
 
     public function logout()
-    {
-        Session::forget('user_id');
+{
+    Session::forget('user_id');
 
-        return redirect('/login')->with('success', 'Berhasil logout.');
-    }
+    return redirect()->route('welcome')->with('success', 'Berhasil logout.');
+}
 }
 

@@ -9,11 +9,21 @@ use App\Models\Tarif;
 class TarifController extends Controller
 {
     public function index(Request $request)
-    {
-        $data= Tarif::orderBy('id_tarif', 'desc')
-            ->paginate(5);
-        return view('tarif.index', compact('data'));
+{
+    $query = Tarif::orderBy('id_tarif', 'desc');
+
+    if ($request->search) {
+        $query->where(
+            'jenis_kendaraan',
+            'like',
+            '%' . $request->search . '%'
+        );
     }
+
+    $data = $query->paginate(5);
+
+    return view('tarif.index', compact('data'));
+}
 
     public function create(Request $request)
     {

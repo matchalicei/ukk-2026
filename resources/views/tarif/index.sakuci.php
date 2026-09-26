@@ -37,7 +37,7 @@
                 rgba(255, 196, 0, .08), 
                 transparent 30% 
             ), 
-            #171717; 
+             transparent; 
     } 
  
     .tarif-container { 
@@ -471,6 +471,50 @@
     background: #303030;
     border-color: #444;
 }
+
+.tarif-search {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    margin: 0 auto 28px;
+}
+
+.tarif-search input {
+    flex: 1;
+    height: 48px;
+    padding: 0 18px;
+    border: 2px solid #252525;
+    border-radius: 12px;
+    background: #fff;
+    font-size: 15px;
+    outline: none;
+    transition: 0.2s ease;
+}
+
+.tarif-search input:focus {
+    border-color: #D62828;
+    box-shadow: 0 0 0 3px rgba(214, 40, 40, 0.12);
+}
+
+.tarif-search input::placeholder {
+    color: #888;
+}
+
+.tarif-search .btn-racing {
+    height: 48px;
+    min-width: 90px;
+    border-radius: 12px;
+}
+
+[data-bs-theme="dark"] .tarif-search input {
+    background: #252525;
+    color: #fff;
+    border-color: #fff;
+}
+
+[data-bs-theme="dark"] .tarif-search input::placeholder {
+    color: #aaa;
+}
 </style> 
  
 <div class="tarif-page"> 
@@ -514,6 +558,21 @@
             </div> 
  
         </div> 
+
+        {{-- SEARCH --}}
+        <form method="GET" action="{{ route('tarif.index') }}" class="tarif-search">
+        <input
+        type="text"
+        name="search"
+        value="{{ request('search') }}"
+        placeholder="Cari jenis kendaraan..."
+    >
+
+
+    <button type="submit" class="btn btn-racing">
+        Cari
+    </button>
+</form>
  
         {{-- ACTION --}} 
         <div class="tarif-action"> 
@@ -521,7 +580,7 @@
             <h2 class="tarif-section-title"> 
                 Daftar Tarif Parkir 
             </h2> 
- 
+
             <a 
                 href="{{ route('tarif.create') }}" 
                 class="btn btn-racing" 
