@@ -44,6 +44,10 @@
             is_route('area-parkir.index') ||
             is_route('area-parkir.create') ||
             is_route('area-parkir.edit') ||
+            is_route('transaksi.index') ||
+             is_route('log-aktivitas.index') ||
+            is_route('transaksi.create') ||
+            is_route('transaksi.edit') ||
             is_route('admin.users.index') ||
             is_route('admin.roles.index')
         )

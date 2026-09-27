@@ -7,6 +7,9 @@ use App\Controllers\Core\DocsController;
 use App\Controllers\Core\RoleController;
 use App\Controllers\Core\UserController;
 use App\Controllers\TarifController;
+use App\Controllers\TransaksiController;
+use App\Controllers\LogAktivitasController;
+
 use Sakuci\Route;
 
 /*
@@ -30,7 +33,6 @@ Route::get('/', function () {
 |--------------------------------------------------------------------------
 | Lihat /docs untuk penjelasan lengkap langkah demi langkah.
 */
-
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login')->middleware('guest');
 Route::post('/login', [AuthController::class, 'login'])->name('login.attempt')->middleware('guest');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
@@ -76,6 +78,24 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     Route::delete('/area-parkir/{id}', [AreaParkirController::class, 'destroy'])->name('area-parkir.destroy');
     Route::get('/area-parkir/{id_area}/edit', [AreaParkirController::class, 'edit'])->name('area-parkir.edit');
     Route::put('/area-parkir/{id_area}', [AreaParkirController::class, 'update'])->name('area-parkir.update');
+
+   //transaksi routes
+    Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
+    Route::get('/transaksi/create', [TransaksiController::class, 'create'])->name('transaksi.create');
+    Route::post('/transaksi', [TransaksiController::class, 'store'])->name('transaksi.store');
+    Route::get('/transaksi/{id_parkir}/edit', [TransaksiController::class, 'edit'])->name('transaksi.edit');
+    Route::put('/transaksi/{id_parkir}', [TransaksiController::class, 'update'])->name('transaksi.update'); 
+    Route::delete('/transaksi/{id_parkir}', [TransaksiController::class, 'destroy'])->name('transaksi.destroy');
+    Route::post('/transaksi/{id_parkir}/keluar', [TransaksiController::class, 'keluar'])->name('transaksi.keluar');
+
+    //user
+    Route::delete('/admin/users/{id}', [UserController::class, 'destroy'])
+    ->name('admin.users.destroy');
+
+//log
+    Route::get('/log-aktivitas', [LogAktivitasController::class, 'index'])
+    ->name('log-aktivitas.index');
+
     });
 
 /*

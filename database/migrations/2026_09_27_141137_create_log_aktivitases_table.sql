@@ -1,0 +1,13 @@
+CREATE TABLE IF NOT EXISTS `log_aktivitas` (
+    id_log INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    id_user INT UNSIGNED NOT NULL,
+    aktivitas VARCHAR(255) NOT NULL,
+    keterangan TEXT NULL,
+    waktu DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_log_aktivitas_user
+    FOREIGN KEY (id_user)
+    REFERENCES users(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

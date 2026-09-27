@@ -6,89 +6,202 @@ use Sakuci\Controller;
 use Sakuci\Http\Request;
 use App\Models\Member;
 use App\Models\User;
+use App\Controllers\LogAktivitasController;
 
 class MemberController extends Controller
 {
     public function index(Request $request)
-{
-    $data = Member::query()
-        ->join('users', 'member.id_user', '=', 'users.id')
-        ->select('member.*');
+    {
+        $data = Member::query()
+            ->join('users', 'member.id_user', '=', 'users.id')
+            ->select('member.*');
 
-    if ($request->search) {
-        $data->where(function ($query) use ($request) {
-            $query->where('users.username', 'like', '%' . $request->search . '%')
-                  ->orWhere('member.plat_nomor', 'like', '%' . $request->search . '%')
-                  ->orWhere('member.jenis_kendaraan', 'like', '%' . $request->search . '%')
-                  ->orWhere('member.warna', 'like', '%' . $request->search . '%');
-        });
+        if ($request->search) {
+            $data->where(function ($query) use ($request) {
+                $query->where(
+                    'users.username',
+                    'like',
+                    '%' . $request->search . '%'
+                )
+                ->orWhere(
+                    'member.plat_nomor',
+                    'like',
+                    '%' . $request->search . '%'
+                )
+                ->orWhere(
+                    'member.jenis_kendaraan',
+                    'like',
+                    '%' . $request->search . '%'
+                )
+                ->orWhere(
+                    'member.warna',
+                    'like',
+                    '%' . $request->search . '%'
+                );
+            });
+        }
+
+        $data = $data
+            ->orderBy('member.id_member', 'desc')
+            ->paginate(10);
+
+        $users = User::all();
+
+        return view(
+            'member.index',
+            compact('data', 'users')
+        );
     }
 
-    $data = $data->orderBy('member.id_member', 'desc')
-        ->paginate(5);
-
-    $users = User::all();
-
-    return view('member.index', compact('data', 'users'));
-}
     public function create(Request $request)
     {
-         $users = User::all();
-        return view('member.create', compact('users'));
+        $users = User::all();
+
+        return view(
+            'member.create',
+            compact('users')
+        );
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'plat_nomor'=> 'required',
-            'jenis_kendaraan'=> 'required',
-            'warna'=> 'required',
-            'id_user'=>'required',
+            'plat_nomor' => 'required',
+            'jenis_kendaraan' => 'required',
+            'warna' => 'required',
+            'id_user' => 'required',
         ]);
 
-        member::create([
+        $member = Member::create([
             'id_user' => $request->id_user,
-            'plat_nomor'=> $request->input('plat_nomor'),
-            'jenis_kendaraan'=> $request->input('jenis_kendaraan'),
-            'warna'=> $request->input('warna'),
+            'plat_nomor' => $request->input('plat_nomor'),
+            'jenis_kendaraan' => $request->input('jenis_kendaraan'),
+            'warna' => $request->input('warna'),
         ]);
 
-        return redirect()->route('member.index')->with('success', 'daftar member berhasil ditambahkan');
+        $currentUser = User::current();
+
+        if ($currentUser) {
+            $pemilik = User::find($member->id_user);
+
+            LogAktivitasController::createLog(
+                $currentUser->id,
+                'Menambah member',
+                'Menambahkan member dengan plat nomor "' .
+                $member->plat_nomor .
+                '", jenis kendaraan "' .
+                $member->jenis_kendaraan .
+                '", warna "' .
+                $member->warna .
+                '", pemilik "' .
+                ($pemilik ? $pemilik->username : '-') .
+                '".'
+            );
+        }
+
+        return redirect()
+            ->route('member.index')
+            ->with(
+                'success',
+                'daftar member berhasil ditambahkan'
+            );
     }
 
     public function destroy($id)
     {
-        $member = member::find($id);
+        $member = Member::find($id);
 
         if ($member) {
+
+            $platNomor = $member->plat_nomor;
+            $jenisKendaraan = $member->jenis_kendaraan;
+
+            $currentUser = User::current();
+
             $member->delete();
+
+            if ($currentUser) {
+                LogAktivitasController::createLog(
+                    $currentUser->id,
+                    'Menghapus member',
+                    'Menghapus member dengan plat nomor "' .
+                    $platNomor .
+                    '" dan jenis kendaraan "' .
+                    $jenisKendaraan .
+                    '".'
+                );
+            }
         }
-        return redirect()->route('member.index')
-        ->with('success', 'daftar member berhasil dihapus');
+
+        return redirect()
+            ->route('member.index')
+            ->with(
+                'success',
+                'daftar member berhasil dihapus'
+            );
     }
 
     public function edit($id_member)
     {
-        $member = member::findorfail($id_member);
-          $users = User::all(); 
-         return view('member.edit', compact('member', 'users'));
+        $member = Member::findOrFail($id_member);
+
+        $users = User::all();
+
+        return view(
+            'member.edit',
+            compact('member', 'users')
+        );
     }
 
     public function update(Request $request, $id_member)
     {
         $request->validate([
-            'plat_nomor'=> 'required',
-            'jenis_kendaraan'=> 'required',
-            'warna'=> 'required',
-            'id_user'=>'required',
+            'plat_nomor' => 'required',
+            'jenis_kendaraan' => 'required',
+            'warna' => 'required',
+            'id_user' => 'required',
         ]);
-        $member = member::findorfail($id_member);
+
+        $member = Member::findOrFail($id_member);
+
+        $platLama = $member->plat_nomor;
+        $jenisLama = $member->jenis_kendaraan;
+        $warnaLama = $member->warna;
+
         $member->update([
             'id_user' => $request->id_user,
-            'plat_nomor'=> $request->plat_nomor,
-            'jenis_kendaraan'=> $request->jenis_kendaraan,
-            'warna'=> $request->warna,
+            'plat_nomor' => $request->plat_nomor,
+            'jenis_kendaraan' => $request->jenis_kendaraan,
+            'warna' => $request->warna,
         ]);
-        return redirect()->route('member.index')->with('success', 'daftar member berhasil diperbarui');
+
+        $currentUser = User::current();
+
+        if ($currentUser) {
+            LogAktivitasController::createLog(
+                $currentUser->id,
+                'Mengubah member',
+                'Mengubah member dari plat nomor "' .
+                $platLama .
+                '", jenis kendaraan "' .
+                $jenisLama .
+                '", warna "' .
+                $warnaLama .
+                '" menjadi plat nomor "' .
+                $member->plat_nomor .
+                '", jenis kendaraan "' .
+                $member->jenis_kendaraan .
+                '", warna "' .
+                $member->warna .
+                '".'
+            );
+        }
+
+        return redirect()
+            ->route('member.index')
+            ->with(
+                'success',
+                'daftar member berhasil diperbarui'
+            );
     }
 }

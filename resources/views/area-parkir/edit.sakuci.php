@@ -1,4 +1,3 @@
-```blade
 @extends('layouts.app')
 
 @section('title', config('app.name') . ' -- Edit Area Parkir')
@@ -427,8 +426,7 @@
             </div>
 
             <p class="area-edit-description">
-                Perbarui nama area, kapasitas, dan jumlah kendaraan
-                yang sedang terisi.
+                Perbarui nama area dan kapasitas kendaraan yang tersedia.
             </p>
 
             <form
@@ -480,27 +478,6 @@
 
                 </div>
 
-                <div class="mb-3">
-
-                    <label
-                        for="terisi"
-                        class="area-edit-label"
-                    >
-                        Terisi
-                    </label>
-
-                    <input
-                        type="number"
-                        name="terisi"
-                        id="terisi"
-                        class="area-edit-input"
-                        value="{{ $data->terisi }}"
-                        min="0"
-                        required
-                    >
-
-                </div>
-
                 <div class="area-edit-actions">
 
                     <button
@@ -534,4 +511,3 @@
 </div>
 
 @endsection
-```

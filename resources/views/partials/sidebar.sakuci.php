@@ -113,8 +113,8 @@
 
     {{-- TRANSAKSI --}}
     <a
-        href="#"
-        class="sidebar-link"
+        href="{{ route('transaksi.index') }}"
+        class="sidebar-link {{ is_route('transaksi.index') ? 'active' : '' }}"
     >
         <span class="sidebar-icon transaksi-icon">
             <img
@@ -125,6 +125,21 @@
 
         <span>Transaksi</span>
     </a>
+
+    {{-- LOG AKTIVITAS --}}
+<a 
+    href="{{ route('log-aktivitas.index') }}" 
+    class="sidebar-link {{ is_route('log-aktivitas.index') ? 'active' : '' }}" 
+>
+    <span class="sidebar-icon log-icon">
+        <img 
+            src="{{ asset('assets/images/racing/benderabalapmcqueen.png') }}" 
+            alt="Log Aktivitas"
+        >
+    </span>
+
+    <span>Log Aktivitas</span>
+</a>
 
 </div>
 
@@ -593,7 +608,11 @@
     width: 31px !important;
     height: 31px !important;
 }
-
+ .log-icon img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
 
 /* =========================================================
    USER ICON

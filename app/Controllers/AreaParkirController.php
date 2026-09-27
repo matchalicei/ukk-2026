@@ -5,25 +5,30 @@ namespace App\Controllers;
 use Sakuci\Controller;
 use Sakuci\Http\Request;
 use App\Models\AreaParkir;
+use App\Models\User;
+use App\Controllers\LogAktivitasController;
 
 class AreaParkirController extends Controller
 {
-  public function index(Request $request)
-{
-    $query = AreaParkir::orderBy('id_area', 'desc');
+    public function index(Request $request)
+    {
+        $query = AreaParkir::orderBy('id_area', 'desc');
 
-    if ($request->search) {
-        $query->where(
-            'nama_area',
-            'like',
-            '%' . $request->search . '%'
+        if ($request->search) {
+            $query->where(
+                'nama_area',
+                'like',
+                '%' . $request->search . '%'
+            );
+        }
+
+        $data = $query->paginate(10);
+
+        return view(
+            'area-parkir.index',
+            compact('data')
         );
     }
-
-    $data = $query->paginate(5);
-
-    return view('area-parkir.index', compact('data'));
-}
 
     public function create(Request $request)
     {
@@ -33,49 +38,116 @@ class AreaParkirController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_area'=> 'required',
-            'kapasitas'=> 'required|numeric',
-            'terisi'=> 'required|numeric',
+            'nama_area' => 'required',
+            'kapasitas' => 'required|numeric',
         ]);
 
-        AreaParkir::create([
-            'nama_area'=> $request->input('nama_area'),
-            'kapasitas'=> $request->input('kapasitas'),
-            'terisi'=> $request->input('terisi'),
+        $data = AreaParkir::create([
+            'nama_area' => $request->input('nama_area'),
+            'kapasitas' => $request->input('kapasitas'),
+            'terisi' => 0,
         ]);
 
-        return redirect()->route('area-parkir.index')->with('success', 'daftar area parkir berhasil ditambahkan');
+        $currentUser = User::current();
+
+        if ($currentUser) {
+            LogAktivitasController::createLog(
+                $currentUser->id,
+                'Menambah area parkir',
+                'Menambahkan area "' .
+                $data->nama_area .
+                '" dengan kapasitas ' .
+                $data->kapasitas .
+                ' kendaraan.'
+            );
+        }
+
+        return redirect()
+            ->route('area-parkir.index')
+            ->with(
+                'success',
+                'daftar area parkir berhasil ditambahkan'
+            );
     }
 
     public function edit(Request $request, $id_area)
     {
         $data = AreaParkir::findOrFail($id_area);
-        return view('area-parkir.edit', compact('data'));
+
+        return view(
+            'area-parkir.edit',
+            compact('data')
+        );
     }
 
     public function update(Request $request, $id_area)
     {
         $request->validate([
-            'nama_area'=> 'required',
-            'kapasitas'=> 'required|numeric',
-            'terisi'=> 'required|numeric',
+            'nama_area' => 'required',
+            'kapasitas' => 'required|numeric',
         ]);
 
         $data = AreaParkir::findOrFail($id_area);
+
+        $namaLama = $data->nama_area;
+        $kapasitasLama = $data->kapasitas;
+
         $data->update([
-            'nama_area'=> $request->input('nama_area'),
-            'kapasitas'=> $request->input('kapasitas'),
-            'terisi'=> $request->input('terisi'),
+            'nama_area' => $request->input('nama_area'),
+            'kapasitas' => $request->input('kapasitas'),
         ]);
 
-        return redirect()->route('area-parkir.index')->with('success', 'daftar area parkir berhasil diperbarui');
+        $currentUser = User::current();
+
+        if ($currentUser) {
+            LogAktivitasController::createLog(
+                $currentUser->id,
+                'Mengubah area parkir',
+                'Mengubah area "' .
+                $namaLama .
+                '" menjadi "' .
+                $data->nama_area .
+                '". Kapasitas: ' .
+                $kapasitasLama .
+                ' → ' .
+                $data->kapasitas .
+                '.'
+            );
+        }
+
+        return redirect()
+            ->route('area-parkir.index')
+            ->with(
+                'success',
+                'daftar area parkir berhasil diperbarui'
+            );
     }
 
     public function destroy(Request $request, $id_area)
     {
         $data = AreaParkir::findOrFail($id_area);
+
+        $namaArea = $data->nama_area;
+
+        $currentUser = User::current();
+
         $data->delete();
 
-        return redirect()->route('area-parkir.index')->with('success', 'daftar area parkir berhasil dihapus');
+        if ($currentUser) {
+            LogAktivitasController::createLog(
+                $currentUser->id,
+                'Menghapus area parkir',
+                'Menghapus area "' .
+                $namaArea .
+                '".'
+            );
+        }
+
+        return redirect()
+            ->route('area-parkir.index')
+            ->with(
+                'success',
+                'daftar area parkir berhasil dihapus'
+            );
     }
 }

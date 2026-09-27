@@ -1,4 +1,3 @@
-```blade
 @extends('layouts.app')
 
 @section('title', config('app.name') . ' -- Tambah Area Parkir')
@@ -433,8 +432,7 @@
             </div>
 
             <p class="area-create-description">
-                Tambahkan area parkir baru beserta kapasitas dan jumlah
-                kendaraan yang sedang terisi.
+                Tambahkan area parkir baru beserta kapasitas kendaraan yang tersedia.
             </p>
 
             <form
@@ -485,27 +483,6 @@
 
                 </div>
 
-                <div class="mb-3">
-
-                    <label
-                        for="terisi"
-                        class="area-create-label"
-                    >
-                        Terisi
-                    </label>
-
-                    <input
-                        type="number"
-                        name="terisi"
-                        id="terisi"
-                        class="area-create-input"
-                        placeholder="Masukkan jumlah kendaraan"
-                        min="0"
-                        required
-                    >
-
-                </div>
-
                 <div class="area-create-actions">
 
                     <button
@@ -539,4 +516,3 @@
 </div>
 
 @endsection
-```

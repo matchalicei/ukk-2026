@@ -10,4 +10,6 @@ class Tarif extends Model
     protected string $primaryKey = 'id_tarif';
 
     protected array $fillable = ['jenis_kendaraan', 'tarif_per_jam'];
+
+    public bool $timestamps = false;
 }

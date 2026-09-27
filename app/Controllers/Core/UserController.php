@@ -4,6 +4,7 @@ namespace App\Controllers\Core;
 
 use App\Models\Role;
 use App\Models\User;
+use App\Controllers\LogAktivitasController;
 use Sakuci\Controller;
 use Sakuci\Http\Request;
 
@@ -26,13 +27,49 @@ class UserController extends Controller
             'role'     => 'required|exists:roles,name',
         ]);
 
-        User::create([
+        $user = User::create([
             'username' => $data['username'],
             'password' => password_hash($data['password'], PASSWORD_DEFAULT),
             'role'     => $data['role'],
         ]);
 
-        return back()->with('success', 'User "' . $data['username'] . '" berhasil ditambahkan.');
+        $currentUser = User::current();
+
+        if ($currentUser) {
+            LogAktivitasController::createLog(
+                $currentUser->id,
+                'Menambah user',
+                'Menambahkan user "' . $user->username . '" dengan role "' . $user->role . '".'
+            );
+        }
+
+        return back()->with(
+            'success',
+            'User "' . $data['username'] . '" berhasil ditambahkan.'
+        );
+    }
+
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+
+        $username = $user->username;
+
+        $currentUser = User::current();
+
+        $user->delete();
+
+        if ($currentUser) {
+            LogAktivitasController::createLog(
+                $currentUser->id,
+                'Menghapus user',
+                'Menghapus user "' . $username . '".'
+            );
+        }
+
+        return back()->with(
+            'success',
+            'User "' . $username . '" berhasil dihapus.'
+        );
     }
 }
-
