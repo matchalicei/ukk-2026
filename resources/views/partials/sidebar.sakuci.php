@@ -110,22 +110,6 @@
         <span>Area Parkir</span>
     </a>
 
-
-    {{-- TRANSAKSI --}}
-    <a
-        href="{{ route('transaksi.index') }}"
-        class="sidebar-link {{ is_route('transaksi.index') ? 'active' : '' }}"
-    >
-        <span class="sidebar-icon transaksi-icon">
-            <img
-                src="{{ asset('assets/images/racing/petirkuning.png') }}"
-                alt="Transaksi"
-            >
-        </span>
-
-        <span>Transaksi</span>
-    </a>
-
     {{-- LOG AKTIVITAS --}}
 <a 
     href="{{ route('log-aktivitas.index') }}" 

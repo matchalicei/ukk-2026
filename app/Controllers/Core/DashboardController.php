@@ -9,7 +9,13 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        return view('core.dashboard', ['user' => User::current()]);
+        $user = User::current();
+
+        if ($user->role === 'petugas') {
+            return view('petugas.dashboard', ['user' => $user]);
+        }
+
+        return view('core.dashboard', ['user' => $user]);
     }
 
     public function admin()
@@ -17,4 +23,3 @@ class DashboardController extends Controller
         return view('core.admin.dashboard', ['user' => User::current()]);
     }
 }
-

@@ -598,9 +598,12 @@
                                 value="{{ $member->id_member }}"
                                 {{ old('id_member') == $member->id_member ? 'selected' : '' }}
                             >
-                                {{ $member->nama_member }}
+                               {{ $member->user ? $member->user->username : '-' }}
                                 -
                                 {{ $member->plat_nomor }}
+                                -
+                                {{ $member->jenis_kendaraan }}
+
                             </option>
 
                         @endforeach

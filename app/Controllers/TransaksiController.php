@@ -71,10 +71,13 @@ class TransaksiController extends Controller
 
     public function create(Request $request)
     {
-        $members = Member::all();
+       $members = Member::query()
+    ->join('users', 'member.id_user', '=', 'users.id')
+    ->select('member.*')
+    ->get();
         $tarif = Tarif::all();
         $areas = AreaParkir::all();
-        $users = User::all();
+        $users = User::where('role', 'petugas')->get();;
 
         return view(
             'transaksi.create',
@@ -480,4 +483,59 @@ class TransaksiController extends Controller
                 'transaksi berhasil dihapus'
             );
     }
+    public function struk(Request $request, $id_parkir)
+{
+    $data = Transaksi::query()
+        ->join(
+            'member',
+            'transaksi.id_member',
+            '=',
+            'member.id_member'
+        )
+        ->join(
+            'users',
+            'member.id_user',
+            '=',
+            'users.id'
+        )
+        ->join(
+            'tarif',
+            'transaksi.id_tarif',
+            '=',
+            'tarif.id_tarif'
+        )
+        ->join(
+            'area_parkir',
+            'transaksi.id_area',
+            '=',
+            'area_parkir.id_area'
+        )
+        ->select(
+            'transaksi.*',
+            'users.username',
+            'member.plat_nomor',
+            'member.jenis_kendaraan',
+            'tarif.tarif_per_jam',
+            'area_parkir.nama_area'
+        )
+        ->where(
+            'transaksi.id_parkir',
+            $id_parkir
+        )
+        ->first();
+
+    if (!$data) {
+        return redirect()
+            ->route('transaksi.index')
+            ->with(
+                'error',
+                'Data transaksi tidak ditemukan.'
+            );
+    }
+
+    return view(
+        'transaksi.struk',
+        compact('data')
+    );
+}
 }

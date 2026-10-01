@@ -990,7 +990,8 @@
                             </td>
 
 
-                            {{-- AKSI --}}
+                           {{-- AKSI --}}
+
 <td>
     <div class="aksi-wrapper">
 
@@ -1011,23 +1012,16 @@
                 </button>
             </form>
 
-        @endif
+        @else
 
-        <form
-            action="{{ route('transaksi.destroy', ['id_parkir' => $t->id_parkir]) }}"
-            method="POST"
-            onsubmit="return confirm('Yakin ingin menghapus transaksi ini?');"
-        >
-            @csrf
-            @method('DELETE')
-
-            <button
-                type="submit"
-                class="btn-delete"
+            <a
+                href="{{ route('transaksi.struk', ['id_parkir' => $t->id_parkir]) }}"
+                class="btn-keluar"
             >
-                Hapus
-            </button>
-        </form>
+                Cetak Struk
+            </a>
+
+        @endif
 
     </div>
 </td>

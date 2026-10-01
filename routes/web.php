@@ -9,6 +9,9 @@ use App\Controllers\Core\UserController;
 use App\Controllers\TarifController;
 use App\Controllers\TransaksiController;
 use App\Controllers\LogAktivitasController;
+use App\Controllers\MemberController;
+use App\Controllers\AreaParkirController;
+use App\Controllers\OwnerController;
 
 use Sakuci\Route;
 
@@ -19,84 +22,199 @@ use Sakuci\Route;
 | Daftarkan seluruh route aplikasi di sini.
 |
 | Cara menulis action:
-|   [HomeController::class, 'index']   -> disarankan
-|   'HomeController@index'             -> namespace App\Controllers otomatis
-|   function () { ... }                -> closure
+|   [HomeController::class, 'index'] -> disarankan
+|   'HomeController@index'           -> namespace App\Controllers otomatis
+|   function () { ... }              -> closure
 */
 
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
+
+
 /*
 |--------------------------------------------------------------------------
 | Login multi-role
 |--------------------------------------------------------------------------
-| Lihat /docs untuk penjelasan lengkap langkah demi langkah.
 */
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login')->middleware('guest');
-Route::post('/login', [AuthController::class, 'login'])->name('login.attempt')->middleware('guest');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
-Route::get('/register', [AuthController::class, 'showRegister'])->name('register')->middleware('guest');
-Route::post('/register', [AuthController::class, 'register'])->name('register.attempt')->middleware('guest');
+Route::get('/login', [AuthController::class, 'showLogin'])
+    ->name('login')
+    ->middleware('guest');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
+Route::post('/login', [AuthController::class, 'login'])
+    ->name('login.attempt')
+    ->middleware('guest');
 
-Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
-    Route::get('/', [DashboardController::class, 'admin'])->name('admin.dashboard');
+Route::post('/logout', [AuthController::class, 'logout'])
+    ->name('logout')
+    ->middleware('auth');
 
-    Route::get('/roles', [RoleController::class, 'index'])->name('admin.roles.index');
-    Route::post('/roles', [RoleController::class, 'store'])->name('admin.roles.store');
-    Route::put('/roles/{role}', [RoleController::class, 'update'])->name('admin.roles.update');
-    Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('admin.roles.destroy');
+Route::get('/register', [AuthController::class, 'showRegister'])
+    ->name('register')
+    ->middleware('guest');
 
-    Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
-    Route::post('/users', [UserController::class, 'store'])->name('admin.users.store');
+Route::post('/register', [AuthController::class, 'register'])
+    ->name('register.attempt')
+    ->middleware('guest');
 
-    Route::get('/database/export', [DatabaseController::class, 'export'])->name('admin.database.export');
 
-    //tarif routes
-    Route::get('/tarif', [TarifController::class, 'index'])->name('tarif.index');
-    Route::get('/tarif/create', [TarifController::class, 'create'])->name('tarif.create');
-    Route::post('/tarif', [TarifController::class, 'store'])->name('tarif.store');
-    Route::delete('/tarif/{id}', [TarifController::class, 'destroy'])->name('tarif.destroy');
-    Route::get('/tarif/edit/{id_tarif}', [TarifController::class, 'edit'])->name('tarif.edit');
-    Route::PUT('/tarif/{id_tarif}', [TarifController::class, 'update'])->name('tarif.update');
+/*
+|--------------------------------------------------------------------------
+| Dashboard umum
+|--------------------------------------------------------------------------
+*/
 
-    //member routes
-    Route::get('/member', [MemberController::class, 'index'])->name('member.index');
-    Route::get('/member/create', [MemberController::class, 'create'])->name('member.create');
-    Route::post('/member', [MemberController::class, 'store'])->name('member.store');
-    Route::delete('/member/{id}', [MemberController::class, 'destroy'])->name('member.destroy');
-    Route::get('/member/edit/{id_member}', [MemberController::class, 'edit'])->name('member.edit');
-    Route::PUT('/member/{id_member}', [MemberController::class, 'update'])->name('member.update');
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->name('dashboard')
+    ->middleware('auth');
 
-    //area parkir routes
-    Route::get('/area-parkir', [AreaParkirController::class, 'index'])->name('area-parkir.index');
-    Route::get('/area-parkir/create', [AreaParkirController::class, 'create'])->name('area-parkir.create');
-    Route::post('/area-parkir', [AreaParkirController::class, 'store'])->name('area-parkir.store');
-    Route::delete('/area-parkir/{id}', [AreaParkirController::class, 'destroy'])->name('area-parkir.destroy');
-    Route::get('/area-parkir/{id_area}/edit', [AreaParkirController::class, 'edit'])->name('area-parkir.edit');
-    Route::put('/area-parkir/{id_area}', [AreaParkirController::class, 'update'])->name('area-parkir.update');
 
-   //transaksi routes
-    Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
-    Route::get('/transaksi/create', [TransaksiController::class, 'create'])->name('transaksi.create');
-    Route::post('/transaksi', [TransaksiController::class, 'store'])->name('transaksi.store');
-    Route::get('/transaksi/{id_parkir}/edit', [TransaksiController::class, 'edit'])->name('transaksi.edit');
-    Route::put('/transaksi/{id_parkir}', [TransaksiController::class, 'update'])->name('transaksi.update'); 
-    Route::delete('/transaksi/{id_parkir}', [TransaksiController::class, 'destroy'])->name('transaksi.destroy');
-    Route::post('/transaksi/{id_parkir}/keluar', [TransaksiController::class, 'keluar'])->name('transaksi.keluar');
+/*
+|--------------------------------------------------------------------------
+| ADMIN
+|--------------------------------------------------------------------------
+*/
 
-    //user
-    Route::delete('/admin/users/{id}', [UserController::class, 'destroy'])
-    ->name('admin.users.destroy');
+Route::group([
+    'prefix' => 'admin',
+    'middleware' => 'admin'
+], function () {
 
-//log
+    Route::get('/', [DashboardController::class, 'admin'])
+        ->name('admin.dashboard');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Role
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/roles', [RoleController::class, 'index'])
+        ->name('admin.roles.index');
+
+    Route::post('/roles', [RoleController::class, 'store'])
+        ->name('admin.roles.store');
+
+    Route::put('/roles/{role}', [RoleController::class, 'update'])
+        ->name('admin.roles.update');
+
+    Route::delete('/roles/{role}', [RoleController::class, 'destroy'])
+        ->name('admin.roles.destroy');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | User
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/users', [UserController::class, 'index'])
+        ->name('admin.users.index');
+
+    Route::post('/users', [UserController::class, 'store'])
+        ->name('admin.users.store');
+
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])
+        ->name('admin.users.destroy');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Database
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/database/export', [DatabaseController::class, 'export'])
+        ->name('admin.database.export');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Tarif
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/tarif', [TarifController::class, 'index'])
+        ->name('tarif.index');
+
+    Route::get('/tarif/create', [TarifController::class, 'create'])
+        ->name('tarif.create');
+
+    Route::post('/tarif', [TarifController::class, 'store'])
+        ->name('tarif.store');
+
+    Route::delete('/tarif/{id}', [TarifController::class, 'destroy'])
+        ->name('tarif.destroy');
+
+    Route::get('/tarif/edit/{id_tarif}', [TarifController::class, 'edit'])
+        ->name('tarif.edit');
+
+    Route::put('/tarif/{id_tarif}', [TarifController::class, 'update'])
+        ->name('tarif.update');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Member
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/member', [MemberController::class, 'index'])
+        ->name('member.index');
+
+    Route::get('/member/create', [MemberController::class, 'create'])
+        ->name('member.create');
+
+    Route::post('/member', [MemberController::class, 'store'])
+        ->name('member.store');
+
+    Route::delete('/member/{id}', [MemberController::class, 'destroy'])
+        ->name('member.destroy');
+
+    Route::get('/member/edit/{id_member}', [MemberController::class, 'edit'])
+        ->name('member.edit');
+
+    Route::put('/member/{id_member}', [MemberController::class, 'update'])
+        ->name('member.update');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Area Parkir
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/area-parkir', [AreaParkirController::class, 'index'])
+        ->name('area-parkir.index');
+
+    Route::get('/area-parkir/create', [AreaParkirController::class, 'create'])
+        ->name('area-parkir.create');
+
+    Route::post('/area-parkir', [AreaParkirController::class, 'store'])
+        ->name('area-parkir.store');
+
+    Route::delete('/area-parkir/{id}', [AreaParkirController::class, 'destroy'])
+        ->name('area-parkir.destroy');
+
+    Route::get('/area-parkir/{id_area}/edit', [AreaParkirController::class, 'edit'])
+        ->name('area-parkir.edit');
+
+    Route::put('/area-parkir/{id_area}', [AreaParkirController::class, 'update'])
+        ->name('area-parkir.update');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Log Aktivitas
+    |--------------------------------------------------------------------------
+    */
+
     Route::get('/log-aktivitas', [LogAktivitasController::class, 'index'])
-    ->name('log-aktivitas.index');
+        ->name('log-aktivitas.index');
+});
 
-    });
 
 /*
 |--------------------------------------------------------------------------
@@ -108,43 +226,134 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 */
 // @generated-roles:start
 
-// @role:siswa:start
-Route::group(['prefix' => 'siswa', 'middleware' => 'siswa'], function () {
-    Route::get('/', [DashboardController::class, 'index'])->name('siswa.dashboard');
-});
-// @role:siswa:end
-// @role:owner:start
-Route::group(['prefix' => 'owner', 'middleware' => 'owner'], function () {
-    Route::get('/', [DashboardController::class, 'index'])->name('owner.dashboard');
-});
-// @role:owner:end
-// @role:petugas:start
-Route::group(['prefix' => 'petugas', 'middleware' => 'petugas'], function () {
-    Route::get('/', [DashboardController::class, 'index'])->name('petugas.dashboard');
-});
-// @role:petugas:end
-// @role:user:start
-Route::group(['prefix' => 'user', 'middleware' => 'user'], function () {
-    Route::get('/', [DashboardController::class, 'index'])->name('user.dashboard');
-});
-// @role:user:end
-// @generated-roles:end
 
 /*
 |--------------------------------------------------------------------------
-| Contoh (hapus/ubah sesuai kebutuhan)
+| SISWA
+|--------------------------------------------------------------------------
+*/
+
+// @role:siswa:start
+Route::group([
+    'prefix' => 'siswa',
+    'middleware' => 'siswa'
+], function () {
+
+    Route::get('/', [DashboardController::class, 'index'])
+        ->name('siswa.dashboard');
+});
+// @role:siswa:end
+
+
+/*
+|--------------------------------------------------------------------------
+| OWNER
+|--------------------------------------------------------------------------
+*/
+
+// @role:owner:start
+Route::group([
+    'prefix' => 'owner',
+    'middleware' => 'owner'
+], function () {
+
+   Route::get('/', [OwnerController::class, 'index'])
+    ->name('owner.dashboard');
+});
+// @role:owner:end
+
+
+/*
+|--------------------------------------------------------------------------
+| PETUGAS
+|--------------------------------------------------------------------------
+*/
+
+// @role:petugas:start
+Route::group([
+    'prefix' => 'petugas',
+    'middleware' => 'petugas'
+], function () {
+
+    /*
+    |--------------------------------------------------------------------------
+    | Dashboard Petugas
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/', [DashboardController::class, 'index'])
+        ->name('petugas.dashboard');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Transaksi
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/transaksi', [TransaksiController::class, 'index'])
+        ->name('transaksi.index');
+
+    Route::get('/transaksi/create', [TransaksiController::class, 'create'])
+        ->name('transaksi.create');
+
+    Route::post('/transaksi', [TransaksiController::class, 'store'])
+        ->name('transaksi.store');
+
+    Route::get('/transaksi/{id_parkir}/edit', [TransaksiController::class, 'edit'])
+        ->name('transaksi.edit');
+
+    Route::put('/transaksi/{id_parkir}', [TransaksiController::class, 'update'])
+        ->name('transaksi.update');
+
+    Route::delete('/transaksi/{id_parkir}', [TransaksiController::class, 'destroy'])
+        ->name('transaksi.destroy');
+
+    Route::post('/transaksi/{id_parkir}/keluar', [TransaksiController::class, 'keluar'])
+        ->name('transaksi.keluar');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Cetak Struk
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('/transaksi/{id_parkir}/struk', [TransaksiController::class, 'struk'])
+        ->name('transaksi.struk');
+});
+// @role:petugas:end
+
+
+/*
+|--------------------------------------------------------------------------
+| USER
+|--------------------------------------------------------------------------
+*/
+
+// @role:user:start
+Route::group([
+    'prefix' => 'user',
+    'middleware' => 'user'
+], function () {
+
+    Route::get('/', [DashboardController::class, 'index'])
+        ->name('user.dashboard');
+});
+// @role:user:end
+
+
+// @generated-roles:end
+
+
+/*
+|--------------------------------------------------------------------------
+| Contoh
 |--------------------------------------------------------------------------
 |
 | use App\Controllers\BukuController;
 |
-| Route::get('/buku', [BukuController::class, 'index'])->name('buku.index');
+| Route::get('/buku', [BukuController::class, 'index'])
+|     ->name('buku.index');
 |
-| // Tujuh route CRUD sekaligus: index, create, store, show, edit, update, destroy
-| // Route::resource
-|
-| // Group dengan prefix dan middleware bersama
-| Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
-|     Route::get('/dashboard', [DashboardController::class, 'index']);
-| });
 */
-

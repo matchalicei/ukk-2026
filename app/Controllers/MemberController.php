@@ -55,7 +55,7 @@ class MemberController extends Controller
 
     public function create(Request $request)
     {
-        $users = User::all();
+       $users = User::where('role', 'user')->get();
 
         return view(
             'member.create',

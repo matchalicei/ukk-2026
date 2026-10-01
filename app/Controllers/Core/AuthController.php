@@ -17,21 +17,29 @@ class AuthController extends Controller
 
     public function showRegister()
     {
-        $roles = Role::where('can_register', 1)->orderBy('name')->get();
+        $roles = Role::where('can_register', 1)
+            ->orderBy('name')
+            ->get();
 
         if ($roles === []) {
-            return redirect('/login')->with('error', 'Pendaftaran belum dibuka.');
+            return redirect('/login')
+                ->with('error', 'Pendaftaran belum dibuka.');
         }
 
-        return view('core.auth.register', ['roles' => $roles]);
+        return view(
+            'core.auth.register',
+            ['roles' => $roles]
+        );
     }
 
     public function register(Request $request)
     {
-        $allowed = Role::where('can_register', 1)->pluck('name');
+        $allowed = Role::where('can_register', 1)
+            ->pluck('name');
 
         if ($allowed === []) {
-            return redirect('/login')->with('error', 'Pendaftaran belum dibuka.');
+            return redirect('/login')
+                ->with('error', 'Pendaftaran belum dibuka.');
         }
 
         $data = $request->validate([
@@ -42,13 +50,22 @@ class AuthController extends Controller
 
         $user = User::create([
             'username' => $data['username'],
-            'password' => password_hash($data['password'], PASSWORD_DEFAULT),
-            'role'     => $data['role'],
+            'password' => password_hash(
+                $data['password'],
+                PASSWORD_DEFAULT
+            ),
+            'role' => $data['role'],
         ]);
 
         Session::put('user_id', $user->id);
 
-        return redirect('/dashboard')->with('success', 'Pendaftaran berhasil. Selamat datang, ' . $user->username . '.');
+        return redirect('/dashboard')
+            ->with(
+                'success',
+                'Pendaftaran berhasil. Selamat datang, ' .
+                $user->username .
+                '.'
+            );
     }
 
     public function login(Request $request)
@@ -58,25 +75,80 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        $user = User::firstWhere('username', $data['username']);
+        $user = User::firstWhere(
+            'username',
+            $data['username']
+        );
 
-        if (! $user || ! password_verify($data['password'], $user->password)) {
+        if (
+            ! $user ||
+            ! password_verify(
+                $data['password'],
+                $user->password
+            )
+        ) {
             return back()
-                ->withErrors(['username' => 'Username atau password salah.'])
+                ->withErrors([
+                    'username' =>
+                        'Username atau password salah.'
+                ])
                 ->withInput();
         }
 
         Session::put('user_id', $user->id);
 
-        return redirect($user->role === 'admin' ? '/admin' : '/dashboard')
-            ->with('success', 'Selamat datang, ' . $user->username . '.');
+        if ($user->role === 'admin') {
+            return redirect()
+                ->route('admin.dashboard')
+                ->with(
+                    'success',
+                    'Selamat datang, ' .
+                    $user->username .
+                    '.'
+                );
+        }
+
+        if ($user->role === 'owner') {
+            return redirect()
+                ->route('owner.dashboard')
+                ->with(
+                    'success',
+                    'Selamat datang, ' .
+                    $user->username .
+                    '.'
+                );
+        }
+
+        if ($user->role === 'petugas') {
+            return redirect()
+                ->route('petugas.dashboard')
+                ->with(
+                    'success',
+                    'Selamat datang, ' .
+                    $user->username .
+                    '.'
+                );
+        }
+
+        return redirect()
+            ->route('dashboard')
+            ->with(
+                'success',
+                'Selamat datang, ' .
+                $user->username .
+                '.'
+            );
     }
 
     public function logout()
-{
-    Session::forget('user_id');
+    {
+        Session::forget('user_id');
 
-    return redirect()->route('welcome')->with('success', 'Berhasil logout.');
+        return redirect()
+            ->route('welcome')
+            ->with(
+                'success',
+                'Berhasil logout.'
+            );
+    }
 }
-}
-

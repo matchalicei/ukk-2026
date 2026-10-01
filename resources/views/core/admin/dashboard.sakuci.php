@@ -146,31 +146,25 @@
 
                 </div>
 
-
-                {{-- TRANSAKSI --}}
+                {{-- LOG AKTIVITAS --}}
 
                 <div class="col-md-6">
 
-                    <a href="{{ route('transaksi.index') }}"
+                    <a href="{{ route('log-aktivitas.index') }}"
                        class="card text-decoration-none h-100 dashboard-card">
-
 
                         <div class="dashboard-card-body">
 
                             <div class="dashboard-card-number">
-                                04 / TRANSAKSI
+                                04 / LOG AKTIVITAS
                             </div>
 
-                            <div class="d-flex align-items-center gap-2 mb-1">
-
-                                <h3 class="mb-0">
-                                    Transaksi
-                                </h3>
-
-                            </div>
+                            <h3 class="mb-1">
+                               Log Aktivitas
+                            </h3>
 
                             <p class="small">
-                                Kelola transaksi parkir kendaraan.
+                                lihat aktivitas apa saja yang sudah dilakukan.
                             </p>
 
                         </div>
@@ -178,6 +172,8 @@
                     </a>
 
                 </div>
+
+
 
             </div>
 
