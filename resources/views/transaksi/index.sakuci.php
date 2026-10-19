@@ -730,6 +730,7 @@
         .transaksi-table-wrapper {
             box-shadow: 4px 4px 0 var(--racing-black);
         }
+        
     }
 </style>
 
@@ -994,6 +995,17 @@
 
 <td>
     <div class="aksi-wrapper">
+            @if ($t->foto_plat)
+            <button
+    type="button"
+    class="btn-edit"
+    onclick="bukaFotoPlat(this)"
+    data-foto="{{ asset($t->foto_plat) }}"
+>
+    Lihat Foto
+</button>
+        @endif
+
 
         @if ($t->status === 'masuk')
 
@@ -1062,7 +1074,7 @@
 
         <div class="transaksi-pagination">
 
-            {{ $data->links() }}
+            {!! $data->links() !!}
 
         </div>
 
@@ -1070,6 +1082,30 @@
 
 
 </div>
+<!-- Modal Foto Plat -->
+<div class="modal fade" id="modalFotoPlat" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Foto Plat Nomor Kendaraan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="gambarFotoPlat" src="" alt="Foto plat"
+                     style="max-width:100%; max-height:70vh; object-fit:contain;">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+function bukaFotoPlat(tombol) {
+    const modal = document.getElementById('modalFotoPlat');
+    document.getElementById('gambarFotoPlat').src = tombol.dataset.foto;
 
+    bootstrap.Modal.getOrCreateInstance(modal).show();
+}
+</script>
+
+```
 @endsection
 ```
