@@ -77,7 +77,7 @@ class MemberController extends Controller
         'warna' => $request->input('warna'),
     ]);
 
-    $currentUser = User::current()
+    $currentUser = User::current();
     if ($currentUser) {
         $pemilik = User::find($member->id_user);
 

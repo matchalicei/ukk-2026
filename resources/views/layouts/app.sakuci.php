@@ -35,10 +35,10 @@
     >
 </head>
 
-<body class="d-flex flex-column min-vh-100 bg-body-tertiary overflow-x-hidden">
+<body class="d-flex flex-column min-vh-100 bg-body-tertiary">
 
     {{-- Isi halaman --}}
-    <div class="d-flex flex-grow-1 w-100 overflow-x-hidden">
+    <div class="d-flex flex-grow-1 w-100">
 
         {{-- SIDEBAR ADMIN --}}
         @if (
@@ -79,7 +79,7 @@
         @endif
 
         {{-- ISI HALAMAN --}}
-        <main class="flex-grow-1 px-3 px-lg-4 pt-4 overflow-x-auto style="min-width: 0;">
+        <main class="flex-grow-1 px-3 px-lg-4 pt-4 overflow-x-auto" style="min-width: 0;">
             @include('partials.flash')
             @yield('content')
         </main>
