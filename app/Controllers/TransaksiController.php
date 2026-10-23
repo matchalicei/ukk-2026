@@ -124,105 +124,54 @@ class TransaksiController extends Controller
                     '" sudah penuh.');
         }
 
-        $file = $request->file('foto_plat');
-        if (
-            !$file ||
-            ($file['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK
-        ) {
-            return redirect()
-                ->route('transaksi.create')
-                ->with(
-                    'error',
-                    'Foto plat nomor wajib diunggah.');
-        }
+        // Validasi file yang diunggah
+// Cek apakah ada foto dari webcam laptop
+if ($request->filled('foto_base64')) {
+    $imgData = str_replace(['data:image/jpeg;base64,', ' '], ['', '+'], $request->foto_base64);
+    $namaFoto = bin2hex(random_bytes(16)) . '.jpg';
+    
+    // Menggunakan path absolut lokasi folder public
+    $folder = dirname(__DIR__, 2) . '/public/uploads/plat';
+    if (!is_dir($folder)) {
+        mkdir($folder, 0755, true);
+    }
+    
+    file_put_contents($folder . '/' . $namaFoto, base64_decode($imgData));
+    $fotoPlat = 'uploads/plat/' . $namaFoto;
+} 
+// Jika dari input file biasa (HP)
+else if (isset($_FILES['foto_plat']) && $_FILES['foto_plat']['error'] === UPLOAD_ERR_OK) {
+    $file = $_FILES['foto_plat'];
+    $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+    $namaFoto = bin2hex(random_bytes(16)) . '.' . $extension;
+    
+    // Menggunakan path absolut lokasi folder public
+    $folder = dirname(__DIR__, 2) . '/public/uploads/plat';
+    if (!is_dir($folder)) {
+        mkdir($folder, 0755, true);
+    }
+    
+    move_uploaded_file($file['tmp_name'], $folder . '/' . $namaFoto);
+    $fotoPlat = 'uploads/plat/' . $namaFoto;
+} else {
+    $fotoPlat = null;
+}
+// 3. Generate Nomor Karcis Otomatis
+$prefix = 'PKR-' . date('Y-m-d') . '-';
 
-        if (
-            empty($file['tmp_name']) ||
-            !is_uploaded_file($file['tmp_name'])
-        ) {
-            return redirect()
-                ->route('transaksi.create')
-                ->with(
-                    'error',
-                    'File foto tidak valid.');
-        }
+$terakhir = Transaksi::query()
+    ->where('nomor_karcis', 'like', $prefix . '%')
+    ->orderBy('id_parkir', 'desc')
+    ->first();
 
-        if (($file['size'] ?? 0) > 10 * 1024 * 1024) {
-            return redirect()
-                ->route('transaksi.create')
-                ->with(
-                    'error',
-                    'Ukuran foto tidak boleh melebihi 10 MB.');
-        }
+if ($terakhir) {
+    $nomorTerakhir = (int) substr($terakhir->nomor_karcis, -3);
+    $urutan = $nomorTerakhir + 1;
+} else {
+    $urutan = 1;
+}
 
-        $imageInfo = @getimagesize($file['tmp_name']);
-        if ($imageInfo === false) {
-            return redirect()
-                ->route('transaksi.create')
-                ->with(
-                    'error',
-                    'File yang diunggah harus berupa gambar.');
-        }
-
-        $allowedTypes = [
-            IMAGETYPE_JPEG,
-            IMAGETYPE_PNG,
-            IMAGETYPE_GIF,
-            IMAGETYPE_WEBP,
-        ];
-
-        if (!in_array($imageInfo[2], $allowedTypes, true)) {
-            return redirect()
-                ->route('transaksi.create')
-                ->with(
-                    'error',
-                    'Format foto harus JPG, PNG, GIF, atau WEBP.');
-        }
-
-        $extension = image_type_to_extension(
-            $imageInfo[2],
-            false
-        );
-
-        $namaFoto = bin2hex(random_bytes(16)) . '.' . $extension;
-        $folder = dirname(__DIR__, 2) . '/public/uploads/plat';
-
-        if (
-            !is_dir($folder) &&
-            !mkdir($folder, 0755, true) &&
-            !is_dir($folder)
-        ) {
-            return redirect()
-                ->route('transaksi.create')
-                ->with(
-                    'error',
-                    'Folder penyimpanan foto gagal dibuat.');
-        }
-
-        $pathFoto = $folder . '/' . $namaFoto;
-        if (!move_uploaded_file($file['tmp_name'], $pathFoto)) {
-            return redirect()
-                ->route('transaksi.create')
-                ->with(
-                    'error',
-                    'Foto gagal disimpan.');
-        }
-        $fotoPlat = 'uploads/plat/' . $namaFoto;
-
-        $prefix = 'PKR-' . date('Y-m-d') . '-';
-        $terakhir = Transaksi::query()
-            ->where(
-                'nomor_karcis',
-                'like',
-                $prefix . '%')->orderBy('id_parkir', 'desc')->first();
-
-        if ($terakhir) {
-            $nomorTerakhir = (int) substr(
-                $terakhir->nomor_karcis, -3);
-            $urutan = $nomorTerakhir + 1;
-        } else {
-            $urutan = 1;
-        }
+$nomorKarcis = $prefix . str_pad($urutan, 3, '0', STR_PAD_LEFT);
 
         $nomorKarcis = $prefix . str_pad(
             $urutan, 3, '0', STR_PAD_LEFT);

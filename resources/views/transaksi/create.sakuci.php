@@ -633,27 +633,101 @@
                     @enderror
                 </div>
 
-                {{-- FOTO PLAT NOMOR --}}
-                <div class="mb-3">
-                    <label for="foto_plat" class="transaksi-label">
-                        Foto Plat Nomor
-                    </label>
+               {{-- FOTO PLAT NOMOR --}}
+<div class="mb-3">
+   <label class="form-label d-block fw-bold">Foto Plat Nomor Kendaraan</label>
 
-                    <input
-                        type="file"
-                        name="foto_plat"
-                        id="foto_plat"
-                        accept="image/*"
-                        required
-                    >
+    <!-- Input File Tersembunyi (Otomatis dipakai saat dibuka di HP) -->
+    <input type="file" name="foto_plat" id="foto_plat" accept="image/*" capture="environment" style="display:none;" onchange="previewFotoHP(this)">
 
-                    @error('foto_plat')
-                        <div class="invalid-feedback d-block">
-                            {{ $message }}
-                        </div>
-                    @enderror
-                </div>
+    <!-- SATU Tombol Utama -->
+    <button type="button" id="btn-utama" class="btn btn-danger" onclick="mulaiKamera()">
+         Ambil Foto Plat Nomor
+    </button>
 
+    <!-- Area Layar Kamera (Hanya muncul di Laptop saat tombol diklik) -->
+    <div id="box-kamera" style="display:none;" class="mt-2 text-center">
+        <video id="webcam" autoplay playsinline style="width: 100%; max-width: 320px; border-radius: 8px; border: 2px solid #555;"></video>
+        <br>
+        <button type="button" class="btn btn-sm btn-danger mt-2" onclick="jepretLaptop()"> Ambil Foto</button>
+    </div>
+
+    <!-- Preview Hasil Foto -->
+    <div id="box-preview" style="display:none;" class="mt-2 text-center">
+        <img id="img-preview" style="max-width: 250px;" class="img-thumbnail mb-2 d-block mx-auto">
+        <button type="button" class="btn btn-sm btn-warning" onclick="resetKamera()">  Foto Ulang</button>
+    </div>
+
+    <!-- Hidden Input untuk foto webcam laptop -->
+    <input type="hidden" name="foto_base64" id="foto_base64">
+</div>
+
+<script>
+let video = document.getElementById('webcam');
+let streamKamera = null;
+
+function isMobile() {
+    return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
+
+function mulaiKamera() {
+    if (isMobile()) {
+        // Di HP: Buka Kamera Bawaan HP
+        document.getElementById('foto_plat').click();
+    } else {
+        // Di Laptop: Langsung Nyalakan Webcam di Layar
+        document.getElementById('btn-utama').style.display = 'none';
+        document.getElementById('box-kamera').style.display = 'block';
+
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(s => {
+                streamKamera = s;
+                video.srcObject = s;
+            })
+            .catch(err => alert("Kamera laptop tidak diizinkan / tidak ditemukan!"));
+    }
+}
+
+// Handler Preview jika dari HP
+function previewFotoHP(input) {
+    if (input.files && input.files[0]) {
+        let reader = new FileReader();
+        reader.onload = e => {
+            document.getElementById('img-preview').src = e.target.result;
+            document.getElementById('btn-utama').style.display = 'none';
+            document.getElementById('box-preview').style.display = 'block';
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+// Handler Jepret jika dari Laptop
+function jepretLaptop() {
+    let canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas.getContext('2d').drawImage(video, 0, 0);
+
+    let dataUrl = canvas.toDataURL('image/jpeg');
+    document.getElementById('foto_base64').value = dataUrl;
+    document.getElementById('img-preview').src = dataUrl;
+
+    document.getElementById('box-kamera').style.display = 'none';
+    document.getElementById('box-preview').style.display = 'block';
+
+    if (streamKamera) {
+        streamKamera.getTracks().forEach(t => t.stop());
+    }
+}
+
+function resetKamera() {
+    document.getElementById('foto_plat').value = '';
+    document.getElementById('foto_base64').value = '';
+    document.getElementById('box-preview').style.display = 'none';
+    document.getElementById('box-kamera').style.display = 'none';
+    document.getElementById('btn-utama').style.display = 'inline-block';
+}
+</script>
                 {{-- TOMBOL --}}
                 <div class="transaksi-actions">
                     <a
