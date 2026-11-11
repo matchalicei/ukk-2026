@@ -55,9 +55,7 @@ body {
     background: var(--brand);
 }
 
-/* Logo navbar merangkap tombol toggle tema gelap/terang. Titik tengah
-   (hijau/merah) tetap menunjukkan status koneksi database seperti biasa;
-   cincin luarnya yang berubah warna mengikuti tema aktif. */
+
 .logo-toggle {
     display: inline-flex;
     flex: 0 0 auto;

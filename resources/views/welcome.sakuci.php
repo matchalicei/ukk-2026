@@ -459,59 +459,176 @@
         color: #bdbdbd;
     }
 
-    /* RESPONSIVE */
-    @media (max-width: 768px) {
-        .racing-hero {
-            min-height: 720px;
-        }
-
-        .hero-content {
-            padding-top: 105px;
-        }
-
-        .hero-title {
-            font-size: 55px;
-        }
-
-        .hero-description {
-            font-size: 14px;
-        }
-
-        .flag-left,
-        .flag-right {
-            width: 65px;
-        }
-
-        .tire-left,
-        .tire-right {
-            width: 60px;
-        }
-
-        .race-area {
-            left: 3%;
-            right: 3%;
-            bottom: 35px;
-        }
-
-        .feature-card {
-            padding: 25px;
-        }
+   ```css
+```css
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .racing-hero {
+        min-height: 730px;
     }
 
-    @media (max-width: 480px) {
-        .hero-buttons {
-            flex-direction: column;
-            align-items: center;
-        }
+    .hero-content {
+        padding: 100px 24px 0;
+    }
 
-        .racing-btn {
-            width: 200px;
-        }
+    .hero-title {
+        font-size: clamp(42px, 9vw, 55px);
+        letter-spacing: -2px;
+        line-height: 1;
+        overflow-wrap: anywhere;
+    }
 
-        .hero-title {
-            font-size: 45px;
-            letter-spacing: -2px;
-        }
+    .hero-description {
+        max-width: 520px;
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .hero-buttons {
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 24px;
+    }
+
+    .racing-btn {
+        min-width: 120px;
+        padding: 11px 20px;
+    }
+
+    .flag-left {
+        top: 95px;
+        left: 2%;
+        width: 55px;
+    }
+
+    .flag-right {
+        top: 105px;
+        right: 2%;
+        width: 55px;
+    }
+
+    .tire-left {
+        left: 2%;
+        width: 50px;
+    }
+
+    .tire-right {
+        right: 2%;
+        width: 50px;
+    }
+
+    .race-area {
+        left: 4%;
+        right: 4%;
+        bottom: 25px;
+        height: 180px;
+    }
+
+    .race-path-inner {
+        inset: 20px 30px;
+    }
+
+    .mcqueen {
+        width: 70px;
+    }
+
+    .features-section {
+        padding: 65px 16px 75px;
+    }
+
+    .features-title {
+        font-size: 28px;
+    }
+
+    .features-subtitle {
+        margin-bottom: 32px;
+        font-size: 14px;
+    }
+
+    .feature-card {
+        padding: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .racing-hero {
+        min-height: 670px;
+    }
+
+    .hero-content {
+        padding: 90px 20px 0;
+    }
+
+    .hero-badge {
+        padding: 7px 12px;
+        font-size: 10px;
+        letter-spacing: 2px;
+    }
+
+    .hero-title {
+        margin: 24px 0 18px;
+        font-size: clamp(36px, 10vw, 45px);
+        letter-spacing: -2px;
+    }
+
+    .hero-title .yellow {
+        -webkit-text-stroke: 1px var(--racing-black);
+    }
+
+    .hero-description {
+        font-size: 13px;
+        line-height: 1.8;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        margin-top: 24px;
+    }
+
+    .racing-btn {
+        width: 100%;
+        max-width: 240px;
+        min-height: 44px;
+        box-sizing: border-box;
+    }
+
+    .race-area {
+        left: 3%;
+        right: 3%;
+        bottom: 20px;
+        height: 160px;
+    }
+
+    .race-path-inner {
+        inset: 18px 24px;
+    }
+
+    .mcqueen {
+        width: 62px;
+    }
+
+    .smoke {
+        width: 42px;
+    }
+
+    .features-section {
+        padding: 55px 14px 65px;
+    }
+
+    .features-title {
+        font-size: 25px;
+    }
+
+    .feature-card {
+        padding: 22px;
+    }
+
+    .feature-card h3 {
+        font-size: 21px;
+    }
+
     }
 </style>
 

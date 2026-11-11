@@ -21,5 +21,6 @@ class Transaksi extends Model
         'status',
         'id_user',
         'id_area',
+        'foto_plat',
     ];
 }

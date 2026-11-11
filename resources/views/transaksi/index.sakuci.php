@@ -730,6 +730,71 @@
         .transaksi-table-wrapper {
             box-shadow: 4px 4px 0 var(--racing-black);
         }
+
+        <style>
+.css-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.65);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+/* Modal otomatis aktif dan muncul saat link diklik */
+.css-modal-overlay:target {
+    display: flex;
+}
+
+.css-modal-box {
+    background: #fff;
+    width: 90%;
+    max-width: 600px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+.css-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    border-bottom: 1px solid #dee2e6;
+    background: #f8f9fa;
+    color: #333;
+}
+
+.css-modal-close {
+    font-size: 28px;
+    font-weight: bold;
+    color: #666;
+    text-decoration: none;
+    line-height: 1;
+}
+
+.css-modal-close:hover {
+    color: #000;
+}
+
+.css-modal-body img {
+    max-height: 70vh;
+    width: auto;
+    max-width: 100%;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+        
+        
     }
 </style>
 
@@ -990,86 +1055,80 @@
                             </td>
 
 
-                           {{-- AKSI --}}
-
+                       {{-- AKSI --}}
 <td>
     <div class="aksi-wrapper">
+        @if ($t->foto_plat)
+            <button 
+                type="button" 
+                class="btn-edit" 
+                onclick="bukaFotoPlat('{{ asset($t->foto_plat) }}')">
+                Lihat Foto
+            </button>
+        @endif
 
         @if ($t->status === 'masuk')
-
             <form
                 action="{{ route('transaksi.keluar', ['id_parkir' => $t->id_parkir]) }}"
                 method="POST"
                 onsubmit="return confirm('Yakin kendaraan ini akan keluar?');"
             >
                 @csrf
-
-                <button
-                    type="submit"
-                    class="btn-keluar"
-                >
+                <button type="submit" class="btn-keluar">
                     Keluar
                 </button>
             </form>
-
         @else
-
-            <a
-                href="{{ route('transaksi.struk', ['id_parkir' => $t->id_parkir]) }}"
-                class="btn-keluar"
-            >
+            <a href="{{ route('transaksi.struk', ['id_parkir' => $t->id_parkir]) }}" class="btn-keluar">
                 Cetak Struk
             </a>
-
         @endif
-
     </div>
 </td>
-                        </tr>
-
-                    @endforeach
-
-
-                @else
-
-
-                    <tr>
-
-                        <td
-                            colspan="11"
-                            class="text-center py-4"
-                        >
-                            Belum ada transaksi.
-                        </td>
-
-                    </tr>
-
-
-                @endif
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-
-    {{-- =========================
-         PAGINATION
-    ========================== --}}
-
-    @if ($data->hasPages())
-
-        <div class="transaksi-pagination">
-
-            {{ $data->links() }}
-
-        </div>
-
+            </tr>
+        @endforeach
+    @else
+        <tr>
+            <td colspan="11" class="text-center py-4">
+                Belum ada transaksi.
+            </td>
+        </tr>
     @endif
+    </tbody>
+</table>
+</div>
 
+{{-- PAGINATION --}}
+@if ($data->hasPages())
+    <div class="transaksi-pagination">
+        {!! $data->links() !!}
+    </div>
+@endif
 
 </div>
 
+{{-- MODAL FOTO PLAT (DITARUH DI LUAR TABEL) --}}
+<div class="modal fade" id="modalFotoPlat" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Foto Plat Nomor Kendaraan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center p-3">
+                <img id="gambarFotoPlat" src="" alt="Foto plat" class="img-fluid rounded shadow-sm">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function bukaFotoPlat(urlFoto) {
+    document.getElementById('gambarFotoPlat').src = urlFoto;
+    var modalElement = document.getElementById('modalFotoPlat');
+    var modal = bootstrap.Modal.getOrCreateInstance(modalElement);
+    modal.show();
+}
+</script>
 @endsection
 ```

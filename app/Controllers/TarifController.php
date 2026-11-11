@@ -13,17 +13,13 @@ class TarifController extends Controller
     public function index(Request $request)
     {
         $query = Tarif::orderBy('id_tarif', 'desc');
-
         if ($request->search) {
             $query->where(
                 'jenis_kendaraan',
                 'like',
-                '%' . $request->search . '%'
-            );
+                '%' . $request->search . '%');
         }
-
         $data = $query->paginate(10);
-
         return view('tarif.index', compact('data'));
     }
 
@@ -41,22 +37,19 @@ class TarifController extends Controller
 
         $cek = Tarif::where(
             'jenis_kendaraan',
-            $request->input('jenis_kendaraan')
-        )->first();
+            $request->input('jenis_kendaraan'))->first();
 
         if ($cek) {
             return redirect()
                 ->route('tarif.create')
                 ->with('error', 'jenis kendaraan sudah terdaftar');
         }
-
         $tarif = Tarif::create([
             'jenis_kendaraan' => $request->input('jenis_kendaraan'),
             'tarif_per_jam' => $request->input('tarif_per_jam'),
         ]);
 
         $currentUser = User::current();
-
         if ($currentUser) {
             LogAktivitasController::createLog(
                 $currentUser->id,
@@ -65,8 +58,7 @@ class TarifController extends Controller
                 $tarif->jenis_kendaraan .
                 '" sebesar Rp ' .
                 number_format($tarif->tarif_per_jam, 0, ',', '.') .
-                ' per jam.'
-            );
+                ' per jam.');
         }
 
         return redirect()
@@ -77,16 +69,13 @@ class TarifController extends Controller
     public function destroy($id)
     {
         $tarif = Tarif::find($id);
-
         if ($tarif) {
 
             $jenisKendaraan = $tarif->jenis_kendaraan;
             $tarifPerJam = $tarif->tarif_per_jam;
 
             $currentUser = User::current();
-
             $tarif->delete();
-
             if ($currentUser) {
                 LogAktivitasController::createLog(
                     $currentUser->id,
@@ -95,11 +84,9 @@ class TarifController extends Controller
                     $jenisKendaraan .
                     '" sebesar Rp ' .
                     number_format($tarifPerJam, 0, ',', '.') .
-                    ' per jam.'
-                );
+                    ' per jam.');
             }
         }
-
         return redirect()
             ->route('tarif.index')
             ->with('success', 'daftar tarif berhasil dihapus');
@@ -108,7 +95,6 @@ class TarifController extends Controller
     public function edit($id_tarif)
     {
         $tarif = Tarif::findOrFail($id_tarif);
-
         return view('tarif.edit', compact('tarif'));
     }
 
@@ -130,7 +116,6 @@ class TarifController extends Controller
         ]);
 
         $currentUser = User::current();
-
         if ($currentUser) {
             LogAktivitasController::createLog(
                 $currentUser->id,
@@ -143,15 +128,12 @@ class TarifController extends Controller
                 $tarif->jenis_kendaraan .
                 '" Rp ' .
                 number_format($tarif->tarif_per_jam, 0, ',', '.') .
-                ' per jam.'
-            );
+                ' per jam.');
         }
-
         return redirect()
             ->route('tarif.index')
             ->with(
                 'success',
-                'daftar tarif berhasil diperbarui'
-            );
+                'daftar tarif berhasil diperbarui');
     }
 }

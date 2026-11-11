@@ -8,11 +8,6 @@
     .log-page {
         width: 100%;
     }
-
-    /* =========================
-       CARD UTAMA
-    ========================= */
-
     .log-header {
         position: relative;
         overflow: hidden;
@@ -403,7 +398,7 @@
             type="text"
             name="search"
             value="{{ request()->search ?? '' }}"
-            placeholder="Cari berdasarkan username..."
+            placeholder="Cari berdasarkan username atau aktivitas..."
         >
 
         <button type="submit">

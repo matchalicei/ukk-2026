@@ -193,8 +193,6 @@
 </style>
 
 <div class="register-page">
-
-```
 <div class="register-card">
 
     <img
@@ -333,7 +331,6 @@
 
     </div>
 </div>
-```
 
 </div>
 

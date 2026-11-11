@@ -190,8 +190,6 @@
 </style>
 
 <div class="login-page">
-
-```
 <div class="login-card">
 
     <img
@@ -291,8 +289,6 @@
 
     </div>
 </div>
-```
-
 </div>
 
 @endsection

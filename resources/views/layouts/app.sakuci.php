@@ -35,20 +35,12 @@
     >
 </head>
 
-
 <body class="d-flex flex-column min-vh-100 bg-body-tertiary">
 
-    {{-- Navbar dihilangkan agar tampilan tidak terlihat seperti template Sakuci --}}
-
-
     {{-- Isi halaman --}}
-    <div class="d-flex flex-grow-1">
+    <div class="d-flex flex-grow-1 w-100">
 
-
-        {{-- =================================================
-             SIDEBAR ADMIN
-        ================================================== --}}
-
+        {{-- SIDEBAR ADMIN --}}
         @if (
             \App\Models\User::current() &&
             \App\Models\User::current()->role === 'admin' &&
@@ -68,16 +60,10 @@
                 is_route('admin.roles.index')
             )
         )
-
             @include('partials.sidebar')
-
         @endif
 
-
-        {{-- =================================================
-             SIDEBAR PETUGAS
-        ================================================== --}}
-
+        {{-- SIDEBAR PETUGAS --}}
         @if (
             \App\Models\User::current() &&
             \App\Models\User::current()->role === 'petugas' &&
@@ -89,36 +75,23 @@
                 is_route('transaksi.edit')
             )
         )
-
             @include('partials.sidebar-petugas')
-
         @endif
 
-
-        {{-- =================================================
-             ISI HALAMAN
-        ================================================== --}}
-
-        <main class="flex-grow-1 px-3 px-lg-4 pt-4">
-
+        {{-- ISI HALAMAN --}}
+        <main class="flex-grow-1 px-3 px-lg-4 pt-4 overflow-x-auto" style="min-width: 0;">
             @include('partials.flash')
-
             @yield('content')
-
         </main>
 
     </div>
 
-
     {{-- Footer --}}
     @include('partials.footer')
 
-
     {{-- JavaScript --}}
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-
     <script src="{{ asset('js/theme.js') }}"></script>
-
     @yield('scripts')
 
 </body>
