@@ -64,6 +64,12 @@ class MemberController extends Controller
     ]);
 
     $platNomor = strtoupper(trim($request->input('plat_nomor')));
+
+if (!preg_match('/^[A-Z]{1,2}\s?\d{1,4}\s?[A-Z]{1,3}$/', $platNomor)) {
+    return redirect()
+        ->route('member.index')
+        ->with('error', 'Format plat nomor tidak valid!');
+}
     $duplikat = Member::where('plat_nomor', $platNomor)->first();
     if ($duplikat) {
         return redirect()
@@ -146,6 +152,11 @@ class MemberController extends Controller
 
     $member = Member::findOrFail($id_member);
     $platNomor = strtoupper(trim($request->input('plat_nomor')));
+    if (!preg_match('/^[A-Z]{1,2}\s?\d{1,4}\s?[A-Z]{1,3}$/', $platNomor)) {
+    return redirect()
+        ->route('member.edit', $id_member)
+        ->with('error', 'Format plat nomor tidak valid!');
+}
 
     $duplikat = Member::where('plat_nomor', $platNomor)
         ->where('id_member', '!=', $id_member)
